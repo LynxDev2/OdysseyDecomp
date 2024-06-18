@@ -31,7 +31,7 @@ public:
     void exeStart();
     void exeMove();
     void exeMovePlayer();
-    void exeExpload();
+    void exeExplode();
     void exeYoshiEat();
 
 private:
