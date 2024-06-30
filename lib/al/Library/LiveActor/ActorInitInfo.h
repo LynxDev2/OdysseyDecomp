@@ -76,6 +76,7 @@ public:
     void initNoViewId(const PlacementInfo*, const ActorInitInfo&);
 
     const PlacementInfo& getPlacementInfo() const { return *mPlacementInfo; }
+    HitSensorDirector* getHitSensorDirector() const { return mHitSensorDirector; }
 
 private:
     LiveActorGroup* mKitDrawingGroup;
