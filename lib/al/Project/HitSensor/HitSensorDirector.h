@@ -13,14 +13,22 @@ public:
     HitSensorDirector(ExecuteDirector*);
 
     void execute() override;
-
     void initGroup(HitSensor*);
+
+private:
     void executeHitCheckInSameGroup(SensorHitGroup*) const;
     void executeHitCheckGroup(SensorHitGroup*, SensorHitGroup*) const;
     void executeHitCheck(HitSensor*, HitSensor*) const;
 
 private:
-    void* filler[8];
+    SensorHitGroup* mPlayer = nullptr;
+    SensorHitGroup* mPlayerEye = nullptr;
+    SensorHitGroup* mRide = nullptr;
+    SensorHitGroup* mEye = nullptr;
+    SensorHitGroup* mLookAt = nullptr;
+    SensorHitGroup* mSimple = nullptr;
+    SensorHitGroup* mMapObj = nullptr;
+    SensorHitGroup* mCharacter = nullptr;
 };
 
 static_assert(sizeof(HitSensorDirector) == 0x48);
