@@ -12,6 +12,7 @@ class EffectSystem;
 class PlayerHolder;
 class SceneCameraInfo;
 class ShaderHolder;
+class OcclusionCullingJudge;
 
 class GraphicsSystemInfo {
 public:
@@ -28,9 +29,13 @@ public:
     void updateGraphics();
     void preDrawGraphics(SceneCameraInfo*);
 
+    OcclusionCullingJudge* getOcclusionCullingJudge() const { return mOcclusionCullingJudge; }
+
     // incomplete
 private:
-    void* filler[312];
+    void *gap[74];
+    OcclusionCullingJudge *mOcclusionCullingJudge;
+    void *filler[237];
 };
 
 static_assert(sizeof(GraphicsSystemInfo) == 0x9c0);

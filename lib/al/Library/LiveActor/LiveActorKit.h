@@ -64,6 +64,13 @@ public:
     void clearGraphicsRequest();
     void updateGraphics();
     void preDrawGraphics();
+    
+    EffectSystem* getEffectSystem() const { return mEffectSystem; }
+    GraphicsSystemInfo* getGraphicsSystemInfo() const { return mGraphicsSystemInfo; }
+    DemoDirector* getDemoDirector() const { return mDemoDirector; }
+    NatureDirector* getNatureDirector() const { return mNatureDirector; }
+    CameraDirector* getCameraDirector() const { return mCameraDirector; }
+    CollisionDirector* getCollisionDirector() const { return mCollisionDirector; }
 
 private:
     s32 mMaxActors;

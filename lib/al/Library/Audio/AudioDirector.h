@@ -54,6 +54,8 @@ public:
 
     void pauseSystem(bool, const char*, bool, f32, bool, bool, bool) override;
     AreaObjDirector* getAreaObjDirector() const override;
+    
+    SeDirector* getSeDirector() const { return mSeDirector; }
 
 private:
     SeDirector* mSeDirector;

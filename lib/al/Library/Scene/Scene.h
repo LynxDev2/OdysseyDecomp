@@ -54,7 +54,7 @@ public:
     void initScreenCoverCtrl();
     void endInit(const ActorInitInfo&);
 
-private:
+protected:
     void initLiveActorKitImpl(const SceneInitInfo&, s32, s32, s32);
 
     bool mIsAlive;
@@ -70,17 +70,4 @@ private:
     AudioKeeper* mAudioKeeper;
     DrawSystemInfo* mDrawSystemInfo;
 };
-
-class StageScene : public Scene {
-public:
-    StageScene();
-
-    virtual ~StageScene();
-    virtual void init(const SceneInitInfo&);
-    virtual void appear();
-    virtual void kill();
-
-    virtual void control();
-    virtual void drawMain();
-};
-}  // namespace al
+}

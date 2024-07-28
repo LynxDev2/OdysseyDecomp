@@ -8,19 +8,21 @@ namespace al {
 class Effect;
 class EffectUserInfo;
 class MtxPtrHolder;
+class EffectSystem;
 class EffectSystemInfo;
 class EffectPrefixType;
 class EffectSystemInfo;
 class EffectResourceInfo;
+class IUseEffectKeeper;
 
 class EffectKeeper {
 public:
-    EffectKeeper(EffectSystemInfo* systemInfo, const char*, const sead::Vector3f*,
-                 const sead::Vector3f*, const sead::Matrix34f);
-    void update();
-    void tryUpdateMaterial(const char*);
-    void updatePrefix(const EffectPrefixType&, bool);
-    void emitEffectCurrentPos(const char*);
+EffectKeeper(EffectSystemInfo* systemInfo, const char*, const sead::Vector3f*,
+             const sead::Vector3f*, const sead::Matrix34f);
+void update();
+void tryUpdateMaterial(const char*);
+void updatePrefix(const EffectPrefixType&, bool);
+void emitEffectCurrentPos(const char*);
     void findEffect(const char*);
     void emitEffect(const char*, const sead::Vector3f*);
     void tryEmitEffect(const char*, const sead::Vector3f*);
@@ -63,3 +65,7 @@ bool tryFindEffectResouceInfo(const al::EffectSystemInfo*, const char*);
 void emitEffectIfExist(al::IUseEffectKeeper* effectKeeperHolder, const char* effectName,
                        const sead::Vector3f* pos);
 }  // namespace alEffectFunction
+
+namespace alEffectEnvUtil {
+    void resetNatureDirector(al::EffectSystem *);
+} // namespace alEffectEnvUtil

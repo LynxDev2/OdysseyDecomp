@@ -2,15 +2,16 @@
 
 #include <prim/seadSafeString.h>
 
-#include "Library/Message/MessageSystem.h"
 #include "Library/Scene/GameDataHolderBase.h"
-
-#include "System/GameDataFile.h"
-#include "System/WorldList.h"
 
 namespace al {
 class PlacementId;
 }
+
+class GameDataFile;
+class WorldList;
+class QuestInfoHolder;
+class TimeBalloonSequenceInfo;
 
 class GameDataHolder : public al::GameDataHolderBase {
 public:
@@ -86,6 +87,11 @@ public:
 
     s32 findUseScenarioNo(const char*);
 
+    TimeBalloonSequenceInfo* getTimeBalloonSequenceInfo() const { return mTimeBalloonSequenceInfo; }
+    QuestInfoHolder* getQuestInfoHolder() const { return mQuestInfoHolder; }
+    void setIsWaitingForStageStart(bool value) { mIsWaitingForStageStart = value; }
+    void setUnkNumber(s32 value) { mUnkNumber = value; }
+
 private:
     s32 padding;
     GameDataFile** mDataFileArr;
@@ -107,4 +113,11 @@ private:
     u64* field_B8;  // TempSaveData*
     u8 gap_C0[0xD0];
     WorldList* mWorldList;
+    void *gap5[21];
+    s32 mUnkNumber;
+    QuestInfoHolder *mQuestInfoHolder;
+    bool mIsWaitingForStageStart;
+    void *gap6;
+    TimeBalloonSequenceInfo *mTimeBalloonSequenceInfo;
+    void *filler[4];
 };
