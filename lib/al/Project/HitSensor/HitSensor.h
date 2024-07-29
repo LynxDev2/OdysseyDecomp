@@ -15,14 +15,12 @@ namespace std {
 }
 */
 
-struct SensorSortCmpFunc {
-    virtual bool operator()(const al::HitSensor*, const al::HitSensor*) const;
-};
-
 namespace al {
 class LiveActor;
 class HitSensorDirectror;
 class HitSensorKeeper;
+
+using SensorSortCmpFunc = bool (*)(al::HitSensor* a, al::HitSensor* b);
 
 /*
 enum class HitSensorType : u32 {
@@ -117,7 +115,11 @@ public:
     void setRadius(float radius) { mRadius = radius; }
     float getRadius() const { return mRadius; }
     const sead::Vector3f& getPos() const { return mPos; }
-    void setOffset(const sead::Vector3f& offset) { mOffset = offset; }
+    void setOffset(const sead::Vector3f& offset) { 
+        mOffset.x = offset.x;
+        mOffset.y = offset.y;
+        mOffset.z = offset.z;
+    }
     const sead::Vector3f& getOffset() const { return mOffset; }
 
 private:
@@ -127,10 +129,9 @@ private:
     f32 mRadius;
     u16 mMaxSensorCount;             // _1C
     u16 mSensorCount = 0;            // _1E
->>>>>>> 001fd5d (Implemented most of HitSensor system)
-    HitSensor** mSensors;  // _20
-    SensorSortCmpFunc* mSortFunctionPtr;
-    SensorHitGroup* mHitGroup;      // _30
+    HitSensor** mSensors = nullptr;  // _20
+    SensorSortCmpFunc* mSortFunctionPtr = nullptr;
+    SensorHitGroup* mHitGroup = nullptr;      // _30
     bool mIsValidBySystem = false;  // _38
     bool mIsValid = true;           // _39
     bool _3A[4];                    // unknown type

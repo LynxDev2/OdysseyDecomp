@@ -9,19 +9,19 @@ namespace al {
 
 
 // Symbol doesn't allow the use of an enum nor enum class for the HitSensor type
-HitSensor::HitSensor(LiveActor* parentActor, const char* name, u32 hitSensorType, f32 radius,
-                     u16 maxSensorCount, const sead::Vector3<f32>* followPos,
-                     const sead::Matrix34<f32>* followMatrix, const sead::Vector3<f32>& offset)
-    : mName(name), mSensorType((HitSensorType)hitSensorType), mRadius(radius),
-      mMaxSensorCount(maxSensorCount), mFollowPos(followPos), mFollowMtx(followMatrix),
-      mOffset(offset) {
-    if (maxSensorCount) {
-        mSensors = new HitSensor*[mMaxSensorCount];
-        if (mMaxSensorCount > 1)
-            for (int i = 0; i < maxSensorCount; i++)
+    HitSensor::HitSensor(LiveActor* parentActor, const char* name, u32 hitSensorType, f32 radius,
+                         u16 maxSensorCount, const sead::Vector3<f32>* followPos,
+                         const sead::Matrix34<f32>* followMatrix, const sead::Vector3<f32>& offset)
+        : mName(name), mSensorType((HitSensorType)hitSensorType), mRadius(radius),
+          mMaxSensorCount(maxSensorCount), mParentActor(parentActor), mFollowPos(followPos), mFollowMtx(followMatrix),
+          mOffset(offset) {
+            
+        if (maxSensorCount) {
+            mSensors = new HitSensor*[mMaxSensorCount];
+            for (int i = 0; i < mMaxSensorCount; i++)
                 mSensors[i] = nullptr;
+        }
     }
-}
 
 
 void HitSensor::setFollowPosPtr(const sead::Vector3<f32>* pFollowPos) {
@@ -106,13 +106,10 @@ void al::HitSensor::update() {
     }
 }
 
-/*
 void HitSensor::trySensorSort() {
     if (mSortFunctionPtr && mSensorCount > 1) {
-        sort_<HitSensor, SensorSortCmpFunc>(*mSortFunctionPtr);
+        std::sort(mSensors, mSensors + mSensorCount, *mSortFunctionPtr);
     }
 }
-
-*/
 
 }  // namespace al

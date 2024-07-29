@@ -15,6 +15,16 @@ void SensorHitGroup::add(HitSensor* pSensor) {
     mSensorCount++;
 }
 
+void SensorHitGroup::remove(HitSensor* sensor){
+    s32 i = 0;
+    al::HitSensor** groupSensor;
+    for(groupSensor = mSensors; *groupSensor != sensor; groupSensor++){
+        if(++i >= mSensorCount)
+            return;
+    }
+    *groupSensor = mSensors[--mSensorCount];
+}
+
 HitSensor* SensorHitGroup::getSensor(s32 idx) const {
     return mSensors[idx];
 }
