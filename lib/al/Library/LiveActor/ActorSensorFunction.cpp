@@ -4,10 +4,13 @@
 #include "Library/LiveActor/ActorInitInfo.h"
 #include "Library/LiveActor/ActorModelFunction.h"
 #include "Library/LiveActor/ActorPoseKeeper.h"
+#include "Library/LiveActor/ActorSensorController.h"
 #include "Library/LiveActor/LiveActor.h"
+#include "Library/Math/MathLengthUtil.h"
 #include "Project/HitSensor/HitSensor.h"
-#include "math/seadMatrix.h"
-#include "math/seadVectorFwd.h"
+#include "Library/LiveActor/ActorSensorController.h"
+#include "Library/Math/MathAngleUtil.h"
+#include "Library/Math/MathUtil.h"
 
 #define ADD_SENSOR_WITH_TYPE_FUNCTION(type)                                                        \
     HitSensor* addHitSensor##type(al::LiveActor* actor, const ActorInitInfo& initInfo,             \
@@ -91,7 +94,7 @@ f32 getSensorRadius(const LiveActor* actor, const char* name) {
 
 f32 getSensorRadius(const LiveActor* actor) {
     auto* sensorKeeper = alActorSensorFunction::getSensorKeeper(actor);
-    // Nullptr, because it needs to use a 64-bit register to match
+    // All of these use a nullptr, because they need to use a 64-bit register to match
     return sensorKeeper->getSensor(nullptr)->getRadius();
 }
 
@@ -102,20 +105,19 @@ const sead::Vector3f& getSensorPos(const LiveActor* actor, const char* name) {
 
 const sead::Vector3f& getSensorPos(const LiveActor* actor) {
     auto* sensorKeeper = alActorSensorFunction::getSensorKeeper(actor);
-    // Same as above
     return sensorKeeper->getSensor(nullptr)->getPos();
 }
-/*
+
 void setSensorFollowPosOffset(LiveActor* actor, const char* name, const sead::Vector3f& offset){
     auto* sensorKeeper = alActorSensorFunction::getSensorKeeper(actor);
-    sensorKeeper->getSensor(name)->setOffset(&offset);
+    sensorKeeper->getSensor(name)->setOffset(offset);
 }
 
 void setSensorFollowPosOffset(LiveActor* actor, const sead::Vector3f& offset){
     auto* sensorKeeper = alActorSensorFunction::getSensorKeeper(actor);
-    sensorKeeper->getSensor(0)->setOffset(&offset);
+    sensorKeeper->getSensor(nullptr)->setOffset(offset);
 }
-*/
+
 
 const sead::Vector3f& getSensorFollowPosOffset(const LiveActor* actor, const char* name) {
     auto* sensorKeeper = alActorSensorFunction::getSensorKeeper(actor);
@@ -125,6 +127,61 @@ const sead::Vector3f& getSensorFollowPosOffset(const LiveActor* actor, const cha
 const sead::Vector3f& getSensorFollowPosOffset(const LiveActor* actor) {
     auto* sensorKeeper = alActorSensorFunction::getSensorKeeper(actor);
     return sensorKeeper->getSensor(nullptr)->getOffset();
+}
+
+ActorSensorController* createActorSensorController(al::LiveActor* actor, const char* sensorName){
+    return new ActorSensorController(actor, sensorName);
+}
+
+void setSensorRadius(ActorSensorController* controller, f32 radius){
+    controller->setSensorRadius(radius);
+}
+
+void setSensorScale(ActorSensorController* controller, f32 scale){
+    controller->setSensorScale(scale);
+}
+
+void setSensorFollowPosOffset(ActorSensorController* controller, const sead::Vector3f& offset){
+    controller->setSensorFollowPosOffset(offset);
+}
+
+f32 getOriginalSensorRadius(const ActorSensorController* controller){
+    return controller->getSensorRadius();
+}
+
+const sead::Vector3f& getOriginalSensorFollowPosOffset(const ActorSensorController* controller){
+    return controller->getSensorOffset();
+}
+
+void resetActorSensorController(ActorSensorController* controller){
+    controller->resetActorSensorController();
+}
+
+void calcPosBetweenSensors(sead::Vector3f* pos, const HitSensor* sensor1, const HitSensor* sensor2, f32 pFloat){
+    sead::Vector3f sensor1Pos = sensor1->getPos();
+    sead::Vector3f sensor2Pos = sensor2->getPos();
+    sead::Vector3f difference = sensor1Pos - sensor2Pos;
+    if(al::isNearZero(difference, 0.001f)){
+        *pos = sensor1Pos;
+        return;
+    }
+    al::normalize(&difference);
+    f32 combinedRadius = sensor1->getRadius() + sensor2->getRadius();
+    f32 res = sensor1->getRadius() + ((sensor1Pos - sensor2Pos).length() - combinedRadius) * 0.5f + pFloat;
+    *pos *= res;
+    *pos += sensor2Pos;
+}
+
+f32 calcDistance(const HitSensor* sensor1, const HitSensor* sensor2){
+    return (sensor1->getPos() - sensor2->getPos()).length();
+}
+
+const sead::Vector3f& getSensorPos(const al::HitSensor* sensor){
+    return sensor->getPos();
+}
+
+al::LiveActor* getSensorHost(const al::HitSensor* sensor){
+    return sensor->getParentActor();
 }
 
 }  // namespace al

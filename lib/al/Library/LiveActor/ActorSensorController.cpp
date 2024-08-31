@@ -27,8 +27,31 @@ void ActorSensorController::setSensorFollowPosOffset(const sead::Vector3f& offse
 }
 
 void ActorSensorController::resetActorSensorController(){
-    setSensorRadius(mSensorRadius);
+    mHitSensor->setRadius(mSensorRadius);
     mHitSensor->setOffset(mSensorOffset);
+}
+
+ActorSensorControllerList::ActorSensorControllerList(s32 maxControllers) : mMaxControllers(maxControllers){
+    mControllers = new ActorSensorController*[maxControllers];
+    for(s32 i = 0; i < mMaxControllers; i++){
+        mControllers[i] = nullptr;
+    }
+}
+
+void ActorSensorControllerList::addSensor(al::LiveActor* actor, const char* sensorName){
+    mControllers[mControllerNum++] = new ActorSensorController(actor, sensorName);
+}
+
+void ActorSensorControllerList::setAllSensorScale(f32 scale){
+    for(s32 i = 0; i < mControllerNum; i++){
+        mControllers[i]->setSensorScale(scale);
+    }
+}
+
+void ActorSensorControllerList::resetAllActorSensorController(){
+    for(s32 i = 0; i < mControllerNum; i++){
+        mControllers[i]->resetActorSensorController();
+    }
 }
 
 }

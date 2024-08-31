@@ -116,11 +116,10 @@ public:
     float getRadius() const { return mRadius; }
     const sead::Vector3f& getPos() const { return mPos; }
     void setOffset(const sead::Vector3f& offset) { 
-        mOffset.x = offset.x;
-        mOffset.y = offset.y;
-        mOffset.z = offset.z;
+        mOffset.set(offset);
     }
     const sead::Vector3f& getOffset() const { return mOffset; }
+    al::LiveActor* getParentActor() const { return mParentActor;}
 
 private:
     const char* mName;  // _0
