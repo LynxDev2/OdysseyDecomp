@@ -1,8 +1,10 @@
 #include "Library/LiveActor/ActorSensorFunction.h"
 
+#include "Library/Base/StringUtil.h"
 #include "Library/HitSensor/HitSensorKeeper.h"
 #include "Library/LiveActor/ActorInitInfo.h"
 #include "Library/LiveActor/ActorModelFunction.h"
+#include "Library/LiveActor/ActorMovementFunction.h"
 #include "Library/LiveActor/ActorPoseKeeper.h"
 #include "Library/LiveActor/ActorSensorController.h"
 #include "Library/LiveActor/LiveActor.h"
@@ -10,7 +12,9 @@
 #include "Project/HitSensor/HitSensor.h"
 #include "Library/LiveActor/ActorSensorController.h"
 #include "Library/Math/MathAngleUtil.h"
+#include "Library/LiveActor/ActorFlagFunction.h"
 #include "Library/Math/MathUtil.h"
+#include "math/seadVectorFwd.h"
 
 #define ADD_SENSOR_WITH_TYPE_FUNCTION(type)                                                        \
     HitSensor* addHitSensor##type(al::LiveActor* actor, const ActorInitInfo& initInfo,             \
@@ -21,13 +25,12 @@
     }
 
 namespace al {
-// Too much auto?
 HitSensor* addHitSensor(al::LiveActor* actor, const ActorInitInfo& initInfo, const char* name,
                         u32 hitSensorType, f32 radius, u16 maxSensorCount,
                         const sead::Vector3f& offset) {
-    auto* sensorKeeper = alActorSensorFunction::getSensorKeeper(actor);
-    auto* actorTrans = al::getTransPtr(actor);
-    auto* sensor = sensorKeeper->addSensor(actor, name, hitSensorType, radius, maxSensorCount,
+    al::HitSensorKeeper* sensorKeeper = alActorSensorFunction::getSensorKeeper(actor);
+    sead::Vector3f* actorTrans = al::getTransPtr(actor);
+    al::HitSensor* sensor = sensorKeeper->addSensor(actor, name, hitSensorType, radius, maxSensorCount,
                                            actorTrans, nullptr, offset);
     initInfo.getHitSensorDirector()->initGroup(sensor);
     return sensor;
@@ -183,5 +186,76 @@ const sead::Vector3f& getSensorPos(const al::HitSensor* sensor){
 al::LiveActor* getSensorHost(const al::HitSensor* sensor){
     return sensor->getParentActor();
 }
+
+bool isFaceBetweenSensors(const sead::Vector3f& pos, const HitSensor* sensor1, const HitSensor* sensor2){
+    const sead::Vector3f& sensor1pos = sensor1->getPos();
+    const sead::Vector3f& sensor2pos = sensor2->getPos();
+    sead::Vector3f vecBetweenSensors;
+    vecBetweenSensors.x = sensor2pos.x - sensor1pos.x;
+    vecBetweenSensors.y = sensor2pos.y - sensor1pos.y;
+    vecBetweenSensors.z = sensor2pos.z - sensor1pos.z;
+    al::tryNormalizeOrZero(&vecBetweenSensors);
+    return vecBetweenSensors.dot(pos) > 0.0f;
+}
+
+bool isEnableLookAtTargetSensor(const HitSensor* sensor, const sead::Vector3f& pos, f32 maxDistance){
+    if(isDead(getSensorHost(sensor)) || !isSensorValid(sensor))
+        return false;
+    return (sensor->getPos() - pos).squaredLength() <= maxDistance * maxDistance;
+}
+
+bool isSensorValid(const HitSensor* sensor){ return sensor->isValid(); }
+
+const sead::Vector3f& getActorTrans(const HitSensor* sensor){ return getTrans(getSensorHost(sensor)); }
+const sead::Vector3f& getActorVelocity(const HitSensor* sensor){ return getVelocity(getSensorHost(sensor)); }
+const sead::Vector3f& getActorGravity(const HitSensor* sensor){ return getGravity(getSensorHost(sensor)); };
+
+bool isSensorName(const HitSensor* sensor, const char* name) { return al::isEqualString(sensor->getName(), name); }
+bool isSensorHostName(const HitSensor* sensor, const char* name) { return al::isEqualString(getSensorHost(sensor)->getName(), name); }
+bool isSensorHost(const HitSensor* sensor, const LiveActor* host) { return al::getSensorHost(sensor) == host; }
+
+void validateHitSensors(LiveActor* actor){
+    HitSensorKeeper* sensorKeeper = alActorSensorFunction::getSensorKeeper(actor);
+    if(sensorKeeper)
+        sensorKeeper->validate();
+}
+void invalidateHitSensors(LiveActor* actor){
+    HitSensorKeeper* sensorKeeper = alActorSensorFunction::getSensorKeeper(actor);
+    if(sensorKeeper)
+        sensorKeeper->invalidate();
+}
+bool isSensorValid(const LiveActor* actor, const char* name) { return getHitSensor(actor, name)->isValid(); }
+void validateHitSensor(const LiveActor* actor, const char* name) { return getHitSensor(actor, name)->validate(); }
+void invalidateHitSensor(const LiveActor* actor, const char* name) { return getHitSensor(actor, name)->invalidate(); }
+
+void validateHitSensorBindableAll(LiveActor*);
+bool isSensorBindableAll(const HitSensor* sensor){
+    HitSensorType type = sensor->getType();
+    return type == HitSensorType::Bindable || type == HitSensorType::BindableGoal || type == HitSensorType::BindableAllPlayer || type == HitSensorType::BindableBubbleOutScreen || type == HitSensorType::BindableKoura || type == HitSensorType::BindableRouteDokan || type == HitSensorType::BindableBubblePadInput;
+}
+void validateHitSensorEnemyAll(LiveActor*);
+bool isSensorEnemy(const HitSensor*);
+void validateHitSensorEnemyAttackAll(LiveActor*);
+bool isSensorEnemyAttack(const HitSensor*);
+void validateHitSensorEnemyBodyAll(LiveActor*);
+bool isSensorEnemyBody(const HitSensor*);
+void validateHitSensorEyeAll(LiveActor*);
+bool isSensorEye(const HitSensor*);
+void validateHitSensorMapObjAll(LiveActor*);
+bool isSensorMapObj(const HitSensor*);
+void validateHitSensorNpcAll(LiveActor*);
+bool isSensorNpc(const HitSensor*);
+void validateHitSensorPlayerAll(LiveActor*);
+bool isSensorPlayer(const HitSensor*);
+bool isSensorPlayerAll(const HitSensor*);
+void validateHitSensorRideAll(LiveActor*);
+bool isSensorRide(const HitSensor*);
+bool isSensorSimple(const HitSensor*);
+bool isSensorLookAt(const HitSensor*);
+void invalidateHitSensorEyeAll(LiveActor*);
+void invalidateHitSensorPlayerAll(LiveActor*);
+void invalidateHitSensorPlayerAttackAll(LiveActor*);
+bool isSensorPlayerAttack(const HitSensor*);
+bool isSensorPlayerEye(const HitSensor*);
 
 }  // namespace al

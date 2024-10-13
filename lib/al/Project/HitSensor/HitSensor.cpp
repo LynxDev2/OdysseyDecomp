@@ -91,7 +91,7 @@ void HitSensor::addHitSensor(HitSensor* sensor) {
 
 void al::HitSensor::update() {
     if (mFollowPos) {
-        sead::Matrix34f* parentMtx = mParentActor->getBaseMtx();
+        const sead::Matrix34f* parentMtx = mParentActor->getBaseMtx();
         if (parentMtx) {
             mPos.setRotated(*parentMtx, mOffset);
             mPos.add(*mFollowPos);

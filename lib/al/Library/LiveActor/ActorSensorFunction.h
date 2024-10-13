@@ -74,7 +74,7 @@ const sead::Vector3f& getOriginalSensorFollowPosOffset(const ActorSensorControll
 void resetActorSensorController(ActorSensorController*);
 void calcPosBetweenSensors(sead::Vector3f*, const HitSensor*, const HitSensor*, f32);
 f32 calcDistance(const HitSensor*, const HitSensor*);
-sead::Vector3f& getSensorPos(const HitSensor*);
+const sead::Vector3f& getSensorPos(const HitSensor*);
 f32 calcDistanceV(const sead::Vector3f&, const HitSensor*, const HitSensor*);
 f32 calcDistanceH(const sead::Vector3f&, const HitSensor*, const HitSensor*);
 void calcDirBetweenSensors(sead::Vector3f*, const HitSensor*, const HitSensor*);
@@ -93,6 +93,7 @@ bool isFaceBetweenSensors(const sead::Vector3f&, const HitSensor*, const HitSens
 bool isFaceBetweenSensorsH(const sead::Vector3f&, const HitSensor*, const HitSensor*);
 bool isEnableLookAtTargetSensor(const HitSensor*, const sead::Vector3f&, f32);
 bool isSensorValid(const HitSensor*);
+/* Unimplemented */
 bool isHitBoxSensor(const HitSensor*, const sead::Vector3f&, const sead::BoundBox3f&);
 f32 getSensorRadius(const HitSensor*);
 bool isHitBoxSensor(const HitSensor*, const sead::Matrix34f&, const sead::BoundBox3f&);
@@ -111,9 +112,11 @@ bool isHitCircleSensor(const HitSensor*, const sead::Vector3f&, const sead::Vect
 bool isHitCircleSensor(const HitSensor*, const HitSensor*, const sead::Vector3f&, f32, f32);
 bool isHitPlaneSensor(const HitSensor*, const sead::Vector3f&, const sead::Vector3f&, f32);
 bool isHitPlaneSensor(const HitSensor*, const HitSensor*, const sead::Vector3f&, f32);
-sead::Vector3f& getActorTrans(const HitSensor*);
-sead::Vector3f& getActorVelocity(const HitSensor*);
-sead::Vector3f& getActorGravity(const HitSensor*);
+/* ------------------- */
+
+const sead::Vector3f& getActorTrans(const HitSensor*);
+const sead::Vector3f& getActorVelocity(const HitSensor*);
+const sead::Vector3f& getActorGravity(const HitSensor*);
 bool isSensorName(const HitSensor*, const char*);
 bool isSensorHostName(const HitSensor*, const char*);
 bool isSensorHost(const HitSensor*, const LiveActor*);

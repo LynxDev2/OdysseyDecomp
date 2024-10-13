@@ -105,7 +105,6 @@ public:
 
     // Use these plus a few for HitSensorDirector or use friend classes?
     /*
-    const char* getName() const { return mName; }
     u16 getSensorCount() const { return mSensorCount; }
     al::HitSensor* getSubSensor(s32 index) const { return mSensors[index]; }
     al::LiveActor* getParentActor() const { return mParentActor; }
@@ -119,7 +118,11 @@ public:
         mOffset.set(offset);
     }
     const sead::Vector3f& getOffset() const { return mOffset; }
-    al::LiveActor* getParentActor() const { return mParentActor;}
+    al::LiveActor* getParentActor() const { return mParentActor; }
+    bool isInvalidOrInvalidBySystem() const { return !mIsValid || !mIsValidBySystem; }
+    bool isValid() const { return mIsValid && mIsValidBySystem; };
+    const char* getName() const { return mName; }
+    HitSensorType getType() const { return mSensorType; }
 
 private:
     const char* mName;  // _0
@@ -137,7 +140,7 @@ private:
     u16 _3E;
     LiveActor* mParentActor;                // _40
     const sead::Vector3f* mFollowPos;       // _48
-    const sead::Matrix34<f32>* mFollowMtx;  // _50  bool mIsValidBySystem;
+    const sead::Matrix34f* mFollowMtx;  // _50  bool mIsValidBySystem;
     sead::Vector3f mOffset;
 
     friend class HitSensorDirector;
