@@ -230,8 +230,10 @@ void invalidateHitSensor(const LiveActor* actor, const char* name) { return getH
 
 void validateHitSensorBindableAll(LiveActor*);
 bool isSensorBindableAll(const HitSensor* sensor){
-    HitSensorType type = sensor->getType();
-    return type == HitSensorType::Bindable || type == HitSensorType::BindableGoal || type == HitSensorType::BindableAllPlayer || type == HitSensorType::BindableBubbleOutScreen || type == HitSensorType::BindableKoura || type == HitSensorType::BindableRouteDokan || type == HitSensorType::BindableBubblePadInput;
+    if(isSensorBindableGoal(sensor) || isSensorBindableAllPlayer(sensor) || isSensorBindableBubbleOutScreen(sensor) || isSensorBindableKoura(sensor) || isSensorBindableRouteDokan(sensor) || isSensorBindableBubblePadInput(sensor) || isSensorBindable(sensor))
+    //Required to match, thanks clang
+        return true;
+    return false;
 }
 void validateHitSensorEnemyAll(LiveActor*);
 bool isSensorEnemy(const HitSensor*);
@@ -257,5 +259,13 @@ void invalidateHitSensorPlayerAll(LiveActor*);
 void invalidateHitSensorPlayerAttackAll(LiveActor*);
 bool isSensorPlayerAttack(const HitSensor*);
 bool isSensorPlayerEye(const HitSensor*);
+
+bool isSensorBindableGoal(const HitSensor* sensor){ return sensor->getType() == HitSensorType::BindableGoal; }
+bool isSensorBindableAllPlayer(const HitSensor* sensor){ return sensor->getType() == HitSensorType::BindableAllPlayer; }
+bool isSensorBindableBubbleOutScreen(const HitSensor* sensor){ return sensor->getType() == HitSensorType::BindableBubbleOutScreen; }
+bool isSensorBindableKoura(const HitSensor* sensor){ return sensor->getType() == HitSensorType::BindableKoura; }
+bool isSensorBindableRouteDokan(const HitSensor* sensor){ return sensor->getType() == HitSensorType::BindableRouteDokan; }
+bool isSensorBindableBubblePadInput(const HitSensor* sensor){ return sensor->getType() == HitSensorType::BindableBubblePadInput; }
+bool isSensorBindable(const HitSensor* sensor){ return sensor->getType() == HitSensorType::Bindable; }
 
 }  // namespace al

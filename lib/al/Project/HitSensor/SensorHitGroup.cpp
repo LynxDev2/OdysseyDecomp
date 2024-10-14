@@ -16,13 +16,13 @@ void SensorHitGroup::add(HitSensor* pSensor) {
 }
 
 void SensorHitGroup::remove(HitSensor* sensor){
-    s32 i = 0;
-    al::HitSensor** groupSensor;
-    for(groupSensor = mSensors; *groupSensor != sensor; groupSensor++){
-        if(++i >= mSensorCount)
+    for(int i=0; i<mSensorCount; i++) {
+        if(mSensors[i] == sensor) {
+            mSensors[i] = mSensors[mSensorCount-1];
+            mSensorCount--;
             return;
+        }
     }
-    *groupSensor = mSensors[--mSensorCount];
 }
 
 HitSensor* SensorHitGroup::getSensor(s32 idx) const {

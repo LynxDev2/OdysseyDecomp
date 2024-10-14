@@ -151,6 +151,16 @@ void invalidateHitSensorPlayerAll(LiveActor*);
 void invalidateHitSensorPlayerAttackAll(LiveActor*);
 bool isSensorPlayerAttack(const HitSensor*);
 bool isSensorPlayerEye(const HitSensor*);
+
+bool isSensorBindableGoal(const HitSensor*);
+bool isSensorBindableAllPlayer(const HitSensor*);
+bool isSensorBindableBubbleOutScreen(const HitSensor*);
+bool isSensorBindableKoura(const HitSensor*);
+bool isSensorBindableRouteDokan(const HitSensor*);
+bool isSensorBindableBubblePadInput(const HitSensor*);
+bool isSensorBindable(const HitSensor*);
+
+
 }  // namespace al
 
 namespace alActorSensorFunction {

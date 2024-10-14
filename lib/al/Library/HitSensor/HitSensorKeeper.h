@@ -29,7 +29,7 @@ public:
 
 private:
     s32 mMaxSensors;
-    s32 mSensorCount;
+    s32 mSensorCount = 0;
     HitSensor** mSensors;
 };
 
