@@ -28,4 +28,5 @@ void NerveStateBase::control() {}
 
 ActorStateBase::ActorStateBase(const char* name, LiveActor* actor)
     : NerveStateBase(name), mActor(actor) {}
+
 }  // namespace al
