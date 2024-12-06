@@ -79,6 +79,7 @@ public:
     const LayoutInitInfo& getLayoutInitInfo() const { return *mLayoutInitInfo; }
 
     const PlacementInfo& getPlacementInfo() const { return *mPlacementInfo; }
+    HitSensorDirector* getHitSensorDirector() const { return mHitSensorDirector; }
 
     const ActorSceneInfo& getActorSceneInfo() const { return mActorSceneInfo; }
 

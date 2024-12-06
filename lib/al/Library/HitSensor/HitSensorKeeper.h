@@ -3,16 +3,19 @@
 #include <math/seadMatrix.h>
 #include <math/seadVector.h>
 
+#include "Project/HitSensor/HitSensor.h"
+
 namespace al {
 class HitSensor;
 class LiveActor;
 
 class HitSensorKeeper {
 public:
-    HitSensorKeeper(s32);
+    HitSensorKeeper(s32 sensorCount);
 
-    HitSensor* addSensor(LiveActor*, const char*, u32, f32, u16, const sead::Vector3f*,
-                         const sead::Matrix34f*, const sead::Vector3f&);
+    HitSensor* addSensor(LiveActor* parentActor, const char* name, u32 hitSensorType, f32 radius,
+                         u16 maxSensorCount, const sead::Vector3<f32>* followPos,
+                         const sead::Matrix34<f32>* followMatrix, const sead::Vector3<f32>& offset);
     void update();
     s32 getSensorNum() const;
     HitSensor* getSensor(s32) const;
@@ -25,7 +28,8 @@ public:
     HitSensor* getSensor(const char*) const;
 
 private:
-    s32 mSensorCount;
+    s32 mMaxSensors;
+    s32 mSensorCount = 0;
     HitSensor** mSensors;
 };
 
