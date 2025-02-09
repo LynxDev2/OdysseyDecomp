@@ -86,7 +86,7 @@ public:
               u16 maxSensorCount, const sead::Vector3f* followPos,
               const sead::Matrix34f* followMatrix, const sead::Vector3f& offset);
 
-    bool trySensorSort();
+    void trySensorSort();
     void setFollowPosPtr(const sead::Vector3f*);
     void setFollowMtxPtr(const sead::Matrix34f*);
     void validate();

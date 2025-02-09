@@ -3,25 +3,210 @@
 #include <math/seadVector.h>
 #include <prim/seadRuntimeTypeInfo.h>
 
-// TODO: This defines the class but the sead decomp doesn't have anything inside the RTTI functions,
-// causing the functions in the vtable to be exported
-#define SENSOR_MSG(Type)                                                                           \
-    class SensorMsg##Type : public al::SensorMsg {                                                 \
-        SEAD_RTTI_OVERRIDE(SensorMsg##Type, al::SensorMsg)                                         \
-    };                                                                                             \
-    bool isMsg##Type(const al::SensorMsg* msg) {                                                   \
-        return SensorMsg##Type::checkDerivedRuntimeTypeInfoStatic(msg->getRuntimeTypeInfo());      \
-    }
+#include "Library/HitSensor/SensorMsgSetupUtil.h"
+#include "math/seadVectorFwd.h"
 
 namespace al {
-class SensorMsg {
-    SEAD_RTTI_BASE(SensorMsg);
-};
-
 class HitSensor;
 class ComboCounter;
 class LiveActor;
-class SensorMsg;
+
+SENSOR_MSG_CBC(PlayerAttackTrample);
+SENSOR_MSG_CBC(PlayerTrampleReflect);
+SENSOR_MSG_CBC(PlayerAttackHipDrop);
+SENSOR_MSG_CBC(PlayerAttackObjHipDrop);
+SENSOR_MSG_CBC(PlayerAttackObjHipDropReflect);
+SENSOR_MSG_CBC(PlayerAttackObjHipDropHighJump);
+SENSOR_MSG(PlayerAttackHipDropKnockDown);
+SENSOR_MSG_CBC(PlayerAttackStatueDrop);
+SENSOR_MSG_CBC(PlayerAttackObjStatueDrop);
+SENSOR_MSG_CBC(PlayerAttackObjStatueDropReflect);
+SENSOR_MSG(PlayerAttackObjStatueDropReflectNoCondition);
+SENSOR_MSG(PlayerAttackStatueTouch);
+SENSOR_MSG(PlayerAttackUpperPunch);
+SENSOR_MSG(PlayerAttackRollingAttack);
+SENSOR_MSG(PlayerAttackRollingReflect);
+SENSOR_MSG(PlayerAttackObjRollingAttack);
+SENSOR_MSG(PlayerAttackObjRollingAttackFailure);
+SENSOR_MSG_CBC(PlayerAttackInvincibleAttack);
+SENSOR_MSG(PlayerAttackFireBallAttack);
+SENSOR_MSG(PlayerAttackRouteDokanFireBallAttack);
+SENSOR_MSG_CBC(PlayerAttackTailAttack);
+SENSOR_MSG(PlayerAttackKick);
+SENSOR_MSG(PlayerAttackCatch);
+SENSOR_MSG_CBC(PlayerAttackSlidingAttack);
+SENSOR_MSG_CBC(PlayerAttackBoomerangAttack);
+SENSOR_MSG(PlayerAttackBoomerangAttackCollide);
+SENSOR_MSG(PlayerAttackBoomerangReflect);
+SENSOR_MSG(PlayerAttackBoomerangBreak);
+SENSOR_MSG_CBC(PlayerAttackBodyAttack);
+SENSOR_MSG_CBC(PlayerAttackBodyLanding);
+SENSOR_MSG_CBC(PlayerAttackBodyAttackReflect);
+SENSOR_MSG_CBC(PlayerAttackClimbAttack);
+SENSOR_MSG_CBC(PlayerAttackClimbSliding);
+SENSOR_MSG_CBC(PlayerAttackClimbRolling);
+SENSOR_MSG_CBC(PlayerAttackSpinAttack);
+SENSOR_MSG_CBC(PlayerAttackGiant);
+
+SENSOR_MSG_CBC(PlayerCooperationHipDrop);
+SENSOR_MSG_CBC(PlayerGiantHipDrop);
+SENSOR_MSG(PlayerDisregard);
+SENSOR_MSG(PlayerDamageTouch);
+SENSOR_MSG(PlayerFloorTouchBind); //This msg is referenced by al::isMsgFloorTouchBind, but doesn't appear in the executable because it's never used
+SENSOR_MSG(PlayerFloorTouch);
+SENSOR_MSG(PlayerTouch);
+SENSOR_MSG_CBC(PlayerInvincibleTouch);
+SENSOR_MSG(PlayerPutOnEquipment);
+SENSOR_MSG(PlayerReleaseEquipment);
+SENSOR_MSG_WITH_DATA(PlayerReleaseEquipmentGoal, (u32, Type));
+SENSOR_MSG(PlayerCarryFront);
+SENSOR_MSG(PlayerCarryFrontWallKeep);
+SENSOR_MSG(PlayerCarryUp);
+SENSOR_MSG(PlayerCarryKeepDemo);
+SENSOR_MSG(PlayerCarryWarp);
+SENSOR_MSG(PlayerLeave);
+SENSOR_MSG(PlayerRelease);
+SENSOR_MSG(PlayerReleaseBySwing);
+SENSOR_MSG(PlayerReleaseDead);
+SENSOR_MSG(PlayerReleaseDamage);
+SENSOR_MSG(PlayerReleaseDemo);
+SENSOR_MSG(PlayerToss);
+
+SENSOR_MSG(PlayerItemGet);
+SENSOR_MSG(RideAllPlayerItemGet);
+SENSOR_MSG(KillerItemGet);
+
+SENSOR_MSG(EnemyAttack);
+SENSOR_MSG_WITH_DATA(EnemyAttackFire, (const char*, FireMaterialCode)); //Usually null, sometimes "LavaRed"
+SENSOR_MSG(EnemyAttackKnockDown);
+SENSOR_MSG(EnemyAttackBoomerang);
+SENSOR_MSG(EnemyAttackNeedle);
+SENSOR_MSG(EnemyItemGet);
+SENSOR_MSG(EnemyRouteDokanAttack);
+SENSOR_MSG(EnemyRouteDokanFire);
+SENSOR_MSG_CBC(Explosion);
+SENSOR_MSG_CBC(ExplosionCollide);
+SENSOR_MSG(Push);
+SENSOR_MSG(PushStrong);
+SENSOR_MSG(PushVeryStrong);
+SENSOR_MSG(BindStart);
+SENSOR_MSG_WITH_DATA(BindInit, (u32, BindType));
+SENSOR_MSG(BindEnd);
+SENSOR_MSG(BindCancel);
+SENSOR_MSG(BindCancelByDemo);
+SENSOR_MSG(BindDamage);
+SENSOR_MSG(BindSteal);
+SENSOR_MSG(BindGiant);
+SENSOR_MSG(PressureDeath);
+SENSOR_MSG(NpcTouch);
+SENSOR_MSG(Hit);
+SENSOR_MSG(HitStrong);
+SENSOR_MSG(HitVeryStrong);
+SENSOR_MSG(KnockDown);
+SENSOR_MSG(MapPush);
+SENSOR_MSG(Vanish);
+SENSOR_MSG_WITH_DATA(ChangeAlpha, (f32, Alpha));
+SENSOR_MSG(ShowModel);
+SENSOR_MSG(HideModel);
+SENSOR_MSG(Restart);
+SENSOR_MSG_WITH_DATA(CollisionImpulse, (sead::Vector3f*, VecPtr), (sead::Vector3f, VecVal), (f32, FloatVal), (sead::Vector3f, VecVal2), (f32, FloatVal2));
+SENSOR_MSG(EnemyTouch);
+SENSOR_MSG(EnemyTrample);
+SENSOR_MSG(MapObjTrample);
+SENSOR_MSG(NeedleBallAttack);
+SENSOR_MSG(PunpunFloorTouch);
+SENSOR_MSG(InvalidateFootPrint);
+SENSOR_MSG_CBC(KickKouraAttack);
+SENSOR_MSG_CBC(KickKouraAttackCollide);
+SENSOR_MSG(KickKouraGetItem);
+SENSOR_MSG(KickKouraReflect);
+SENSOR_MSG(KickKouraCollideNoReflect);
+SENSOR_MSG(KickKouraBreak);
+SENSOR_MSG(KickKouraBlow);
+SENSOR_MSG(KickStoneAttack);
+SENSOR_MSG(KickStoneAttackCollide);
+SENSOR_MSG(KickStoneAttackHold);
+SENSOR_MSG(KickStoneAttackReflect);
+SENSOR_MSG(KickStoneTrample);
+SENSOR_MSG(KillerAttack);
+SENSOR_MSG(LiftGeyser);
+SENSOR_MSG(WarpStart);
+SENSOR_MSG(WarpEnd);
+SENSOR_MSG(HoldCancel);
+SENSOR_MSG(HoleIn);
+SENSOR_MSG(JumpInhibit);
+SENSOR_MSG(GoalKill);
+SENSOR_MSG(Goal);
+SENSOR_MSG_CBC(BallAttack);
+SENSOR_MSG_CBC(BallRouteDokanAttack);
+SENSOR_MSG(BallAttackHold);
+SENSOR_MSG(BallAttackDRCHold);
+SENSOR_MSG(BallAttackCollide);
+SENSOR_MSG_CBC(BallTrample);
+SENSOR_MSG(BallTrampleCollide);
+SENSOR_MSG(BallItemGet);
+SENSOR_MSG(FireBallCollide);
+SENSOR_MSG(FireBallFloorTouch);
+SENSOR_MSG(DokanBazookaAttack);
+SENSOR_MSG(SwitchOn);
+SENSOR_MSG(SwitchOnInit);
+SENSOR_MSG(SwitchOffInit);
+SENSOR_MSG(SwitchKillOn);
+SENSOR_MSG(SwitchKillOnInit);
+SENSOR_MSG(SwitchKillOffInit);
+SENSOR_MSG_WITH_DATA(AskSafetyPoint, (sead::Vector3f**, SafetyPoint));
+SENSOR_MSG(TouchAssist);
+
+//These ten are also referenced by isMsgs but don't appear in the executable
+SENSOR_MSG(PlayerGiantTouch);
+SENSOR_MSG(PlayerAttackDash);
+SENSOR_MSG(TouchAssistTrig);
+SENSOR_MSG(TouchAssistNoPat);
+SENSOR_MSG(TouchAssistTrigOff);
+SENSOR_MSG(TouchAssistTrigNoPat);
+SENSOR_MSG(TouchAssistBurn);
+SENSOR_MSG(TouchReleaseItem);
+SENSOR_MSG(TouchCarryItem);
+SENSOR_MSG(KickKouraItemGet);
+
+SENSOR_MSG(TouchStroke);
+SENSOR_MSG(IsNerveSupportFreeze);
+SENSOR_MSG(OnSyncSupportFreeze);
+SENSOR_MSG(OffSyncSupportFreeze);
+SENSOR_MSG(ScreenPointInvalidCollisionParts);
+SENSOR_MSG_CBC(BlockUpperPunch);
+SENSOR_MSG_CBC(BlockLowerPunch);
+SENSOR_MSG(BlockItemGet);
+SENSOR_MSG_CBC(PlayerKouraAttack);
+SENSOR_MSG(LightFlash);
+SENSOR_MSG(ForceAbyss);
+SENSOR_MSG(SwordAttackHighLeft);
+SENSOR_MSG(SwordAttackHighRight);
+SENSOR_MSG(SwordAttackLowLeft);
+SENSOR_MSG(SwordAttackLowRight);
+SENSOR_MSG(SwordBeamAttack);
+SENSOR_MSG(SwordBeamReflectAttack);
+SENSOR_MSG(SwordAttackJumpUnder);
+SENSOR_MSG(ShieldGuard);
+SENSOR_MSG(AskMultiPlayerEnemy);
+SENSOR_MSG(ItemGettable);
+SENSOR_MSG(KikkiThrow);
+SENSOR_MSG(IsKikkiThrowTarget);
+SENSOR_MSG(PlayerCloudGet);
+SENSOR_MSG(AutoJump);
+SENSOR_MSG(PlayerTouchShadow);
+SENSOR_MSG(PlayerPullOutShadow);
+SENSOR_MSG(PlayerAttackShadow);
+SENSOR_MSG(PlayerAttackShadowStrong);
+SENSOR_MSG_WITH_DATA(PlayerAttackChangePos, (sead::Vector3f*, Pos));
+SENSOR_MSG(AtmosOnlineLight);
+SENSOR_MSG(LightBurn);
+SENSOR_MSG(MoonLightBurn);
+
+SENSOR_MSG_WITH_DATA(String, (const char*, Str));
+SENSOR_MSG_WITH_DATA(StringV4fPtr, (const char*, Str), (sead::Vector4f*, Vec));
+SENSOR_MSG_WITH_DATA(StringV4fSensorPtr, (const char*, Str), (sead::Vector4f*, Vec), (HitSensor*, Sender));
+SENSOR_MSG_WITH_DATA(StringVoidPtr, (const char*, Str), (void*, Ptr));
 
 bool sendMsgPlayerAttackTrample(HitSensor* receiver, HitSensor* sender, ComboCounter* comboCounter);
 bool sendMsgPlayerTrampleReflect(HitSensor* receiver, HitSensor* sender,
@@ -175,7 +360,7 @@ bool sendMsgHideModel(LiveActor* receiver);
 bool sendMsgShowModel(LiveActor* receiver);
 bool sendMsgRestart(LiveActor* receiver);
 bool sendMsgCollisionImpulse(HitSensor* receiver, HitSensor* sender, sead::Vector3f*,
-                             const sead::Vector3f&, const f32, sead::Vector3f&, f32);
+                             const sead::Vector3f&, f32, const sead::Vector3f&, f32);
 bool sendMsgSwitchOn(LiveActor* receiver);
 bool sendMsgSwitchOnInit(LiveActor* receiver);
 bool sendMsgSwitchOffInit(LiveActor* receiver);

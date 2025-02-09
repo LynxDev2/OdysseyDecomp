@@ -163,8 +163,3 @@ bool isSensorBindable(const HitSensor*);
 
 }  // namespace al
 
-namespace alActorSensorFunction {
-al::HitSensorKeeper* getSensorKeeper(const al::LiveActor*);
-void sendMsgSensorToSensor(const al::SensorMsg&, al::HitSensor*, al::HitSensor*);
-void sendMsgToActorUnusedSensor(const al::SensorMsg&, al::LiveActor*);
-}  // namespace alActorSensorFunction

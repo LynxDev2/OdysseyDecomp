@@ -14,9 +14,9 @@ void alSensorFunction::updateHitSensorsAll(al::LiveActor* actor) {
 }
 
 al::HitSensorType alSensorFunction::findSensorTypeByName(const char* name) {
-    s32 i = 0;
-    while (!al::isEqualString(sensorTypeNameToTypeMap[i].name, name))
-        i++;
-
-    return sensorTypeNameToTypeMap[i].sensorType;
+    for(s32 i=0; i<25; i++) {
+        if(al::isEqualString(sensorTypeNameToTypeMap[i].name, name))
+            return sensorTypeNameToTypeMap[i].sensorType;
+    }
+    return al::HitSensorType::MapObj;
 }
