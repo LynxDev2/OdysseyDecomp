@@ -14,7 +14,7 @@
 #include "Library/Math/MathAngleUtil.h"
 #include "Library/LiveActor/ActorFlagFunction.h"
 #include "Library/Math/MathUtil.h"
-#include "math/seadVectorFwd.h"
+#include "Library/LiveActor/alActorSensorFunction.h"
 
 #define ADD_SENSOR_WITH_TYPE_FUNCTION(type)                                                        \
     HitSensor* addHitSensor##type(al::LiveActor* actor, const ActorInitInfo& initInfo,             \
