@@ -3,25 +3,13 @@
 #include <math/seadVector.h>
 #include <prim/seadRuntimeTypeInfo.h>
 
-// TODO: This defines the class but the sead decomp doesn't have anything inside the RTTI functions,
-// causing the functions in the vtable to be exported
-#define SENSOR_MSG(Type)                                                                           \
-    class SensorMsg##Type : public al::SensorMsg {                                                 \
-        SEAD_RTTI_OVERRIDE(SensorMsg##Type, al::SensorMsg)                                         \
-    };                                                                                             \
-    bool isMsg##Type(const al::SensorMsg* msg) {                                                   \
-        return SensorMsg##Type::checkDerivedRuntimeTypeInfoStatic(msg->getRuntimeTypeInfo());      \
-    }
+#include "Library/HitSensor/SensorMsgSetupUtil.h"
+#include "math/seadVectorFwd.h"
 
 namespace al {
-class SensorMsg {
-    SEAD_RTTI_BASE(SensorMsg);
-};
-
 class HitSensor;
 class ComboCounter;
 class LiveActor;
-class SensorMsg;
 
 bool sendMsgPlayerAttackTrample(HitSensor* receiver, HitSensor* sender, ComboCounter* comboCounter);
 bool sendMsgPlayerTrampleReflect(HitSensor* receiver, HitSensor* sender,
@@ -175,7 +163,7 @@ bool sendMsgHideModel(LiveActor* receiver);
 bool sendMsgShowModel(LiveActor* receiver);
 bool sendMsgRestart(LiveActor* receiver);
 bool sendMsgCollisionImpulse(HitSensor* receiver, HitSensor* sender, sead::Vector3f*,
-                             const sead::Vector3f&, const f32, sead::Vector3f&, f32);
+                             const sead::Vector3f&, f32, const sead::Vector3f&, f32);
 bool sendMsgSwitchOn(LiveActor* receiver);
 bool sendMsgSwitchOnInit(LiveActor* receiver);
 bool sendMsgSwitchOffInit(LiveActor* receiver);
@@ -446,6 +434,7 @@ bool isMsgKickStoneTrampleForCrossoverSensor(const SensorMsg* msg, const HitSens
 bool sendMsgPushAndKillVelocityToTarget(LiveActor*, HitSensor*, HitSensor*);
 bool tryReceiveMsgPushAndAddVelocity(LiveActor*, const SensorMsg*, const HitSensor*,
                                      const HitSensor*, f32);
+
 bool tryReceiveMsgPushAndAddVelocityH(LiveActor*, const SensorMsg*, const HitSensor*,
                                       const HitSensor*, f32);
 bool isMySensor(const HitSensor* sensor, const LiveActor* actor);

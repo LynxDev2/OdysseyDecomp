@@ -56,13 +56,23 @@ public:
     void update();
     void addHitSensor(HitSensor*);
 
+    const char* getName() const { return mName; }
+
+    LiveActor* getParentActor() const { return mParentActor; }
+
     const sead::Vector3f& getFollowPosOffset() const { return mFollowPosOffset; }
 
     f32 getRadius() const { return mRadius; }
 
+    const sead::Vector3f& getPos() const { return mPos; }
+
+    HitSensorType getType() const { return mSensorType; }
+
     void setFollowPosOffset(const sead::Vector3f& offset) { mFollowPosOffset.set(offset); }
 
     void setRadius(f32 radius) { mRadius = radius; }
+
+    bool isValid() const { return mIsValid && mIsValidBySystem; }
 
 private:
     const char* mName;

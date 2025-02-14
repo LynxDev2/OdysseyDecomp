@@ -4,6 +4,7 @@
 #include <math/seadMatrix.h>
 #include <math/seadVector.h>
 #include <prim/seadSafeString.h>
+#include <gfx/seadColor.h>
 
 namespace al {
 class ComboCounter;
@@ -17,12 +18,8 @@ class ScreenPointer;
 class ScreenPointTarget;
 }  // namespace al
 
-namespace sead {
-class Color4u8;
-}  // namespace sead
 
 class CapTargetInfo;
-class ComboCounter;
 class DigPoint;
 class FishingFish;
 class GotogotonMark;
@@ -33,7 +30,6 @@ class TouchTargetInfo;
 class WhipTargetInfo;
 
 namespace rs {
-
 bool sendMsgAckCheckpoint(al::HitSensor* source, al::HitSensor* target);
 bool sendMsgAckGetShine(al::HitSensor* source, al::HitSensor* target);
 bool sendMsgAckLifeUp(al::HitSensor* source, al::HitSensor* target);
@@ -432,7 +428,7 @@ bool sendMsgRequestPlayerJump(al::HitSensor* source, al::HitSensor* target, f32)
 bool sendMsgRequestPlayerTrampleJump(al::HitSensor* source, al::HitSensor* target, f32);
 bool sendMsgRequestPlayerSpinJump(al::HitSensor* source, al::HitSensor* target, f32);
 bool sendMsgRequestSphinxJump(al::HitSensor* source, al::HitSensor* target, f32);
-bool sendMsgIgnoreTouchTarget(al::HitSensor* source, al::HitSensor* target);
+bool sendMsgIInitTouchTargetInfognoreTouchTarget(al::HitSensor* source, al::HitSensor* target);
 bool sendMsgIgnoreTouchTarget(al::ScreenPointer*, al::ScreenPointTarget*);
 bool sendMsgInitTouchTargetInfo(al::HitSensor* source, al::HitSensor* target, TouchTargetInfo*,
                                 const sead::Vector3f*);
@@ -1141,8 +1137,8 @@ bool isMsgKillByMoonRockDemo(const al::SensorMsg*);
 bool sendMsgNpcScareByEnemy(al::HitSensor* source, al::HitSensor* target, s32);
 bool tryReceiveMsgNpcScareByEnemyIgnoreTargetHack(const al::SensorMsg*, const CapTargetInfo*);
 bool tryIncrementComboCount(s32*, const al::SensorMsg*);
-ComboCounter* tryGetMsgComboCount(const al::SensorMsg*);
-ComboCounter* getMsgComboCount(const al::SensorMsg*);
+al::ComboCounter* tryGetMsgComboCount(const al::SensorMsg*);
+al::ComboCounter* getMsgComboCount(const al::SensorMsg*);
 bool isRideOn(const al::HitSensor*, const al::HitSensor*);
 bool isMsgKillBySwitchTimer(const al::SensorMsg*);
 bool isVisibleChameleon(const al::SensorMsg*);

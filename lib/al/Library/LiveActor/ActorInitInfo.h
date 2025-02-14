@@ -84,6 +84,8 @@ public:
 
     ExecuteDirector* getExecuteDirector() const { return mExecuteDirector; }
 
+    HitSensorDirector* getHitSensorDirector() const { return mHitSensorDirector; }
+
 private:
     LiveActorGroup* mKitDrawingGroup = nullptr;
     const PlacementInfo* mPlacementInfo = nullptr;

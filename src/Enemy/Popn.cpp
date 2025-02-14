@@ -14,7 +14,7 @@
 #include "Library/LiveActor/ActorInitInfo.h"
 #include "Library/LiveActor/ActorMovementFunction.h"
 #include "Library/LiveActor/ActorPoseKeeper.h"
-#include "Library/LiveActor/ActorSensorFunction.h"
+#include "Library/LiveActor/ActorSensorUtil.h"
 #include "Library/LiveActor/ActorSensorMsgFunction.h"
 #include "Library/LiveActor/LiveActorUtil.h"
 #include "Library/Math/MathUtil.h"
@@ -74,7 +74,7 @@ void Popn::attackSensor(al::HitSensor* target, al::HitSensor* source) {
         al::sendMsgPushAndKillVelocityToTarget(this, target, source);
 
     if (al::isSensorEnemyAttack(target))
-        rs::sendMsgPushToPlayer(source, target) || al::sendMsgEnemyAttack(source, target);
+         al::sendMsgEnemyAttack(source, target) || rs::sendMsgPushToPlayer(source, target);
 }
 
 bool Popn::receiveMsg(const al::SensorMsg* message, al::HitSensor* source, al::HitSensor* target) {
