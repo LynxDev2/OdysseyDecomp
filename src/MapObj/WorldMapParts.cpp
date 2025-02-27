@@ -21,7 +21,7 @@ void WorldMapParts::setWorldMtx(const sead::Matrix34f& srcMtx) {
 
     inverse.setInverse(*mWorldMtx);
     copyMtx.setMul(inverse, srcMtx);
-    setLocalMtx(copyMtx);a
+    setLocalMtx(copyMtx);
 }
 
 void WorldMapParts::updatePose() {
