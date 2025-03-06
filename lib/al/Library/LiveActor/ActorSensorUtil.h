@@ -6,6 +6,8 @@
 #include <prim/seadRuntimeTypeInfo.h>
 
 namespace al {
+
+class SensorMsg;
 class LiveActor;
 class HitSensor;
 class SensorMsg;
@@ -111,7 +113,6 @@ bool isHitCircleSensor(const HitSensor*, const sead::Vector3f&, const sead::Vect
 bool isHitCircleSensor(const HitSensor*, const HitSensor*, const sead::Vector3f&, f32, f32);
 bool isHitPlaneSensor(const HitSensor*, const sead::Vector3f&, const sead::Vector3f&, f32);
 bool isHitPlaneSensor(const HitSensor*, const HitSensor*, const sead::Vector3f&, f32);
-
 const sead::Vector3f& getActorTrans(const HitSensor*);
 const sead::Vector3f& getActorVelocity(const HitSensor*);
 const sead::Vector3f& getActorGravity(const HitSensor*);
@@ -145,6 +146,7 @@ void invalidateHitSensorEyeAll(LiveActor*);
 void invalidateHitSensorPlayerAll(LiveActor*);
 void invalidateHitSensorPlayerAttackAll(LiveActor*);
 bool isSensorPlayerAttack(const HitSensor*);
+
 bool sendMsgPlayerAttackTrample(HitSensor* receiver, HitSensor* sender, ComboCounter* comboCounter);
 bool sendMsgPlayerTrampleReflect(HitSensor* receiver, HitSensor* sender,
                                  ComboCounter* comboCounter);
@@ -297,7 +299,7 @@ bool sendMsgHideModel(LiveActor* receiver);
 bool sendMsgShowModel(LiveActor* receiver);
 bool sendMsgRestart(LiveActor* receiver);
 bool sendMsgCollisionImpulse(HitSensor* receiver, HitSensor* sender, sead::Vector3f*,
-                             const sead::Vector3f&, const f32, sead::Vector3f&, f32);
+                             const sead::Vector3f&, f32, const sead::Vector3f&, f32);
 bool sendMsgSwitchOn(LiveActor* receiver);
 bool sendMsgSwitchOnInit(LiveActor* receiver);
 bool sendMsgSwitchOffInit(LiveActor* receiver);
@@ -310,7 +312,7 @@ bool sendMsgEnemyFloorTouchToColliderGround(LiveActor* receiver, HitSensor* send
 bool sendMsgEnemyUpperPunchToColliderCeiling(LiveActor* receiver, HitSensor* sender);
 bool sendMsgAskSafetyPoint(HitSensor* receiver, HitSensor* sender, sead::Vector3f**);
 bool sendMsgAskSafetyPointToColliderGround(LiveActor* receiver, HitSensor* sender,
-                                           sead::Vector3f**);
+                                           sead::Vector3f** safetyPointAccessor);
 bool sendMsgTouchAssist(HitSensor* receiver, HitSensor* sender);
 bool sendMsgTouchAssistTrig(HitSensor* receiver, HitSensor* sender);
 bool sendMsgTouchStroke(HitSensor* receiver, HitSensor* sender);
@@ -596,7 +598,6 @@ bool sendMsgPushAndKillVelocityToTargetH(LiveActor*, HitSensor*, HitSensor*);
 bool pushAndAddVelocity(LiveActor*, const HitSensor*, const HitSensor*, f32);
 bool pushAndAddVelocityH(LiveActor*, const HitSensor*, const HitSensor*, f32);
 bool pushAndAddVelocityV(LiveActor*, const HitSensor*, const HitSensor*, f32);
-
 bool tryReceiveMsgPushAndAddVelocity(LiveActor*, const SensorMsg*, const HitSensor*,
                                      const HitSensor*, f32);
 bool tryReceiveMsgPushAndAddVelocityH(LiveActor*, const SensorMsg*, const HitSensor*,

@@ -94,11 +94,6 @@
 
 #define PARAM_END_COMMA(type, name) type p##name,
 
-#define DECL_GET(type, name)                                                                       \
-    type get##name() const {                                                                       \
-        return m##name;                                                                            \
-    }
-
 #define POINTER_PARAM_END_COMMA(type, name) type *p##name,
 
 #define PARAM_START_COMMA(type, name) , type p##name
@@ -110,7 +105,6 @@
 #define SET_OUT_VAR_MEMBER(_, name) *p##name = m##name;
 
 #define DECL_MEMBER_VAR_MULTI(...) FOR_EACH_TUPL(DECL_MEMBER_VAR, __VA_ARGS__)
-#define DECL_GET_MULTI(...) FOR_EACH_TUPL(DECL_GET, __VA_ARGS__)
 
 #define PARAM_LIST_END_COMMA(...) FOR_EACH_TUPL(PARAM_END_COMMA, __VA_ARGS__)
 #define POINTER_PARAM_LIST_END_COMMA(...) FOR_EACH_TUPL(POINTER_PARAM_END_COMMA, __VA_ARGS__)
