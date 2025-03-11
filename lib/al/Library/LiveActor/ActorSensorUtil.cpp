@@ -2,8 +2,11 @@
 
 #include "Library/HitSensor/SensorMsgSetupUtil.h"
 #include "Library/LiveActor/ActorCollisionFunction.h"
+#include "Library/LiveActor/ActorMovementFunction.h"
+#include "Library/LiveActor/ActorPoseUtil.h"
 #include "Library/LiveActor/ActorSensorFunction.h"
-#include "math/seadVectorFwd.h"
+#include "Library/Math/MathUtil.h"
+#include "Project/HitSensor/HitSensor.h"
 
 namespace al {
 
@@ -641,6 +644,33 @@ IS_MSG_IMPL(String);
 IS_MSG_IMPL(StringV4fPtr);
 IS_MSG_IMPL(StringV4fSensorPtr);
 IS_MSG_IMPL(StringVoidPtr);
+
+bool isMsgPlayerTrampleForCrossoverSensor(const SensorMsg* msg, const HitSensor* sensor1, const HitSensor* sensor2){
+    return MSG_TYPE_CHECK_(PlayerAttackTrample, msg) && isCrossoverSensor(sensor1, sensor2);
+}
+
+bool isMsgPlayerTrampleReflectForCrossoverSensor(const SensorMsg* msg, const HitSensor* sensor1, const HitSensor* sensor2){
+    return MSG_TYPE_CHECK_(PlayerTrampleReflect, msg) && isCrossoverSensor(sensor1, sensor2);
+}
+
+bool isMsgPlayerUpperPunchForCrossoverSensor(const SensorMsg* msg, const HitSensor* sensor1, const HitSensor* sensor2, f32 unk){
+    if(!MSG_TYPE_CHECK_(PlayerAttackObjUpperPunch, msg)){
+        return false;
+    }
+    sead::Vector3f diff = sensor1->getPos() - sensor2->getPos();
+    sead::Vector3f sensor2ParentGravity = al::getGravity(sensor2->getParentActor());
+    al::normalize(&diff);
+    if(sensor2ParentGravity.dot(diff) < 0.34202f)
+        return false;
+    //Has to be written like this, return A || B doesn't match
+    if (sensor2ParentGravity.dot(al::getVelocity(sensor1->getParentActor())) >= -unk)
+        return false;
+    return true;
+}
+
+bool isMsgKickStoneTrampleForCrossoverSensor(const SensorMsg* msg, const HitSensor* sensor1, const HitSensor* sensor2){
+    return MSG_TYPE_CHECK_(KickStoneTrample, msg) && isCrossoverSensor(sensor1, sensor2);
+}
 
 IS_MSG_MULTIPLE_IMPL(PushAll, Push, PushStrong, PushVeryStrong);
 IS_MSG_IMPL(Push);

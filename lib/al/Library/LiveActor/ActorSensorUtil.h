@@ -560,7 +560,7 @@ bool isMsgStringV4fPtr(const SensorMsg* msg);
 bool isMsgStringV4fSensorPtr(const SensorMsg* msg);
 bool isMsgStringVoidPtr(const SensorMsg* msg);
 bool isMsgPlayerTrampleForCrossoverSensor(const SensorMsg* msg, const HitSensor*, const HitSensor*);
-// Unnamed function at 8FD424 here
+bool isCrossoverSensor(const HitSensor* sensor1, const HitSensor* sensor2); // This function doesn't have a symbol in the game's executable and is located at 8FD424
 bool isMsgPlayerTrampleReflectForCrossoverSensor(const SensorMsg* msg, const HitSensor*,
                                                  const HitSensor*);
 bool isMsgPlayerUpperPunchForCrossoverSensor(const SensorMsg* msg, const HitSensor*,
