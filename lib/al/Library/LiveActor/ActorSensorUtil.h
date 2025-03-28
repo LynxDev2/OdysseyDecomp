@@ -559,15 +559,15 @@ bool isMsgString(const SensorMsg* msg);
 bool isMsgStringV4fPtr(const SensorMsg* msg);
 bool isMsgStringV4fSensorPtr(const SensorMsg* msg);
 bool isMsgStringVoidPtr(const SensorMsg* msg);
-bool isMsgPlayerTrampleForCrossoverSensor(const SensorMsg* msg, const HitSensor*, const HitSensor*);
+bool isMsgPlayerTrampleForCrossoverSensor(const SensorMsg* msg, const HitSensor* sensor1, const HitSensor* sensor2);
 bool isCrossoverSensor(const HitSensor* sensor1, const HitSensor* sensor2); // This function doesn't have a symbol in the game's executable and is located at 8FD424
-bool isMsgPlayerTrampleReflectForCrossoverSensor(const SensorMsg* msg, const HitSensor*,
-                                                 const HitSensor*);
-bool isMsgPlayerUpperPunchForCrossoverSensor(const SensorMsg* msg, const HitSensor*,
-                                             const HitSensor*, f32);
-bool isMsgKickStoneTrampleForCrossoverSensor(const SensorMsg* msg, const HitSensor*,
-                                             const HitSensor*);
-bool sendMsgEnemyAttackForCrossoverSensor(HitSensor*, HitSensor*);
+bool isMsgPlayerTrampleReflectForCrossoverSensor(const SensorMsg* msg, const HitSensor* sensor1,
+                                                 const HitSensor* sensor2);
+bool isMsgPlayerUpperPunchForCrossoverSensor(const SensorMsg* msg, const HitSensor* sensor1,
+                                             const HitSensor* sensor2, f32 unk);
+bool isMsgKickStoneTrampleForCrossoverSensor(const SensorMsg* msg, const HitSensor* sensor1,
+                                             const HitSensor* sensor2);
+bool sendMsgEnemyAttackForCrossoverSensor(HitSensor* receiver, HitSensor* sender);
 bool sendMsgEnemyAttackForCrossoverCylinderSensor(HitSensor*, HitSensor*, const sead::Vector3f&,
                                                   const sead::Vector3f&, f32);
 
@@ -593,8 +593,8 @@ bool isMySensor(const HitSensor*, const LiveActor*);
 bool isSensorHitAnyPlane(const HitSensor*, const HitSensor*, const sead::Vector3f&);
 bool isSensorHitRingShape(const HitSensor*, const HitSensor*, f32);
 bool tryGetEnemyAttackFireMaterialCode(const char**, const SensorMsg*);
-bool sendMsgPushAndKillVelocityToTarget(LiveActor*, HitSensor*, HitSensor*);
-bool sendMsgPushAndKillVelocityToTargetH(LiveActor*, HitSensor*, HitSensor*);
+bool sendMsgPushAndKillVelocityToTarget(LiveActor* actor, HitSensor* receiver, HitSensor* sender);
+bool sendMsgPushAndKillVelocityToTargetH(LiveActor* actor, HitSensor* receiver, HitSensor* sender);
 bool pushAndAddVelocity(LiveActor*, const HitSensor*, const HitSensor*, f32);
 bool pushAndAddVelocityH(LiveActor*, const HitSensor*, const HitSensor*, f32);
 bool pushAndAddVelocityV(LiveActor*, const HitSensor*, const HitSensor*, f32);

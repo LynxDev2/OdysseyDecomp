@@ -7,6 +7,8 @@
 #include "Library/LiveActor/ActorSensorFunction.h"
 #include "Library/Math/MathUtil.h"
 #include "Project/HitSensor/HitSensor.h"
+#include "math/seadMathCalcCommon.h"
+#include "math/seadVectorFwd.h"
 
 namespace al {
 
@@ -645,6 +647,21 @@ IS_MSG_IMPL(StringV4fPtr);
 IS_MSG_IMPL(StringV4fSensorPtr);
 IS_MSG_IMPL(StringVoidPtr);
 
+bool isCrossoverSensor(const HitSensor* sensor1, const HitSensor* sensor2){
+    sead::Vector3f diff = sensor1->getPos() - sensor2->getPos();
+    sead::Vector3f sensor2ParentGravity = getGravity(sensor2->getParentActor());
+    if(!al::tryNormalizeOrZero(&diff))
+        return false;
+    if(sensor2ParentGravity.dot(-diff) < 0.34202f)
+        return false;
+    sead::Vector3f velocityDir;
+    tryNormalizeOrZero(&velocityDir, getVelocity(sensor1->getParentActor()));
+    if(diff.y < 0.0f)
+        return false;
+    f32 dot = velocityDir.dot(-sensor2ParentGravity);
+    return !isNearZero(sead::Mathf::abs(dot),0.001f) && !isNearZero(dot - 1.0f,0.001f);
+}
+
 bool isMsgPlayerTrampleForCrossoverSensor(const SensorMsg* msg, const HitSensor* sensor1, const HitSensor* sensor2){
     return MSG_TYPE_CHECK_(PlayerAttackTrample, msg) && isCrossoverSensor(sensor1, sensor2);
 }
@@ -653,23 +670,58 @@ bool isMsgPlayerTrampleReflectForCrossoverSensor(const SensorMsg* msg, const Hit
     return MSG_TYPE_CHECK_(PlayerTrampleReflect, msg) && isCrossoverSensor(sensor1, sensor2);
 }
 
-bool isMsgPlayerUpperPunchForCrossoverSensor(const SensorMsg* msg, const HitSensor* sensor1, const HitSensor* sensor2, f32 unk){
+bool isMsgPlayerUpperPunchForCrossoverSensor(const SensorMsg* msg, const HitSensor* sensor1, const HitSensor* sensor2, f32 threshold){
     if(!MSG_TYPE_CHECK_(PlayerAttackObjUpperPunch, msg)){
         return false;
     }
     sead::Vector3f diff = sensor1->getPos() - sensor2->getPos();
-    sead::Vector3f sensor2ParentGravity = al::getGravity(sensor2->getParentActor());
-    al::normalize(&diff);
+    sead::Vector3f sensor2ParentGravity = getGravity(sensor2->getParentActor());
+    normalize(&diff);
     if(sensor2ParentGravity.dot(diff) < 0.34202f)
         return false;
     //Has to be written like this, return A || B doesn't match
-    if (sensor2ParentGravity.dot(al::getVelocity(sensor1->getParentActor())) >= -unk)
+    if (sensor2ParentGravity.dot(getVelocity(sensor1->getParentActor())) >= -threshold)
         return false;
     return true;
 }
 
 bool isMsgKickStoneTrampleForCrossoverSensor(const SensorMsg* msg, const HitSensor* sensor1, const HitSensor* sensor2){
     return MSG_TYPE_CHECK_(KickStoneTrample, msg) && isCrossoverSensor(sensor1, sensor2);
+}
+
+bool sendMsgEnemyAttackForCrossoverSensor(HitSensor* receiver, HitSensor* sender){
+    //Not sure why this isn't checking !isCrossoverSensor. Either I named it incorrectly, I misunderstand how the function works or the devs accidentaly forgot the `!` (which is very possible since this is an unused function)
+    if(isCrossoverSensor(receiver, sender))
+        return false;
+    return alActorSensorFunction::sendMsgSensorToSensor(SensorMsgEnemyAttack(), sender, receiver);
+}
+
+bool sendMsgEnemyAttackForCrossoverCylinderSensor(HitSensor* receiver, HitSensor* sender, const sead::Vector3f& vec1,
+                                                  const sead::Vector3f& vec2, f32 unk){
+    f32 v6 = sead::Mathf::clamp(unk - 20.0f, 0.0f,unk);
+
+    sead::Vector3f diff = receiver->getPos() - sender->getPos();
+    sead::Vector3f senderParentGravity = getGravity(sender->getParentActor());
+    verticalizeVec(&diff, vec2, diff);
+
+    if(!(diff.squaredLength() < sead::Mathf::square(v6))){
+        normalize(&diff); 
+        sead::Vector3f velocityDir;
+        tryNormalizeOrZero(&velocityDir, getVelocity(sender->getParentActor()));
+        if(!(diff.y < 0.0f)){
+              f32 dot = senderParentGravity.x * -velocityDir.x + senderParentGravity.y * -velocityDir.y + senderParentGravity.z * -velocityDir.z; //senderParentGravity.dot(-velocityDir) causes worse mismatch
+              if (!isNearZero(sead::Mathf::abs(dot),0.001f) && !isNearZero(dot - 1.0f,0.001f)) {
+                return false;
+              }
+        }
+       
+    }
+    
+    sead::Vector3f diff2 = vec1 - receiver->getPos();
+    verticalizeVec(&diff, vec2, diff2);
+    if(diff.length() <= receiver->getRadius() + unk)
+        return alActorSensorFunction::sendMsgSensorToSensor(SensorMsgEnemyAttack(), sender, receiver);
+    return false;
 }
 
 IS_MSG_MULTIPLE_IMPL(PushAll, Push, PushStrong, PushVeryStrong);
@@ -704,6 +756,31 @@ SENSOR_MSG_WITH_DATA_CUSTOM_CTOR(CollidePush, (sead::Vector3f, Vec))
 };
 
 SEND_MSG_DATA_IMPL(CollidePush, const sead::Vector3f&);
+
+bool sendMsgPushAndKillVelocityToTarget(LiveActor* actor, HitSensor* receiver, HitSensor* sender){
+    if(!alActorSensorFunction::sendMsgSensorToSensor(SensorMsgPush(), receiver, sender))
+        return false;
+    sead::Vector3f diff = sender->getPos() - receiver->getPos();
+    if(!tryNormalizeOrZero(&diff))
+        diff.set(sead::Vector3f::ez);
+    if(getVelocity(actor).dot(diff) > 0.0f)
+        verticalizeVec(al::getVelocityPtr(actor), diff, al::getVelocity(actor));
+    return true;
+}
+
+bool sendMsgPushAndKillVelocityToTargetH(LiveActor* actor, HitSensor* receiver, HitSensor* sender){
+    if(!alActorSensorFunction::sendMsgSensorToSensor(SensorMsgPush(), receiver, sender))
+        return false;
+    sead::Vector3f diff(sender->getPos().x - receiver->getPos().x, 0.0f, sender->getPos().z - receiver->getPos().z);
+    if(!tryNormalizeOrZero(&diff))
+        diff.set(sead::Vector3f::ez);
+    if(getVelocity(actor).dot(diff) > 0.0f)
+        verticalizeVec(al::getVelocityPtr(actor), diff, al::getVelocity(actor));
+    return true;
+}
+
+
+void abcd(){}
 
 SENSOR_MSG_WITH_DATA_CUSTOM_CTOR(CollisionImpulse, (sead::Vector3f*, VecPtr), (const sead::Vector3f*, ConstVec),
                      (f32, FloatVal), (const sead::Vector3f*, ConstVec2), (f32, FloatVal2))
