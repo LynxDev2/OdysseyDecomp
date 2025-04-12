@@ -35,6 +35,7 @@
             python-pkgs.watchdog
             python-pkgs.python-Levenshtein
             python-pkgs.toml
+            python-pkgs.libclang
           ]))
           openssl
           llvmPackages_18.libclang

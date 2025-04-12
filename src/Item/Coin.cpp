@@ -64,6 +64,8 @@ NERVES_MAKE_STRUCT(Coin, WaitConnectMtx, Wait, Appear, AppearCoinLead, WaitPlaye
                    WaitOnDemoEnd)
 }  // namespace
 
+int abc(int a, float b = 1.0f);
+
 const sead::Vector3f sAppearAboveVelocity(0.0f, 25.0f, 0.0f);
 
 Coin::Coin(const char* name, bool isDemo) : al::LiveActor(name), mIsDemo(isDemo) {}
