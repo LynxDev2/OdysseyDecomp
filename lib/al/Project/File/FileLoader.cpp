@@ -54,6 +54,7 @@ static bool isDirectoryValid(const sead::DirectoryEntry& entry, const char* suff
     return entry.is_directory;
 }
 
+// NON_MATCHING: getFileList should be inlined (https://decomp.me/scratch/4HDuW)
 u32 FileLoader::listSubdirectories(sead::FixedSafeString<256> out[], s32 outSize,
                                    const char* path) {
     return getFileList(out, outSize, path, &isDirectoryValid, nullptr);

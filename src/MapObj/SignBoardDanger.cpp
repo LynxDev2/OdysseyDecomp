@@ -30,7 +30,7 @@ NERVES_MAKE_STRUCT(SignBoardDanger, Wait, Dead, Reaction);
 
 SignBoardDanger::SignBoardDanger(const char* name) : al::LiveActor(name) {}
 
-// Mismatch: https://decomp.me/scratch/mqOky
+// NON_MATCHING: https://decomp.me/scratch/mqOky
 void SignBoardDanger::init(const al::ActorInitInfo& info) {
     al::initMapPartsActor(this, info, nullptr);
 

@@ -6,6 +6,7 @@
 #include "Library/Nerve/NerveUtil.h"
 
 namespace {
+// NON_MATCHING: Wait is marked as NonMatchingMajor due to a "bug" in tools/check related to duplicate symbols (no decomp.me needed)
 NERVE_HOST_TYPE_IMPL(SimpleLayoutMenu, Appear);
 NERVE_HOST_TYPE_IMPL(SimpleLayoutMenu, Wait);
 NERVE_HOST_TYPE_IMPL(SimpleLayoutMenu, End);

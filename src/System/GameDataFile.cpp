@@ -38,6 +38,7 @@ bool GameDataFile::HintInfo::isDisableByWorldWarpHole(bool condition) const {
     return false;
 }
 
+// NON_MATCHING: https://decomp.me/scratch/MtwT6
 bool GameDataFile::HintInfo::isEnableUnlock(s32 curWorldId, bool isGameClear, s32 scenarioNo,
                                             bool isInWorld) const {
     if (testFunc(curWorldId, isGameClear, scenarioNo, isInWorld)) {
@@ -56,6 +57,7 @@ bool GameDataFile::HintInfo::isEnableUnlock(s32 curWorldId, bool isGameClear, s3
     return false;
 }
 
+// NON_MATCHING: https://decomp.me/scratch/muRKa
 bool GameDataFile::HintInfo::isHintStatusUnlock(s32 curWorldId, s32 scenarioNo,
                                                 bool isInWorld) const {
     if (mWorldIndex != curWorldId || unkBool1 || mHintStatus != HintStatus::NONE ||

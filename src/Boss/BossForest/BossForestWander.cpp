@@ -13,6 +13,7 @@
 
 namespace {
 NERVE_HOST_TYPE_IMPL(BossForestWander, WaitSwitchStart)
+// NON_MATCHING: Wait and Move marked as NonMatchingMajor due to a "bug" in tools/check related to duplicate symbols (no decomp.me needed)
 NERVE_HOST_TYPE_IMPL(BossForestWander, Wait)
 NERVE_HOST_TYPE_IMPL(BossForestWander, Move)
 NERVE_HOST_TYPE_IMPL(BossForestWander, End)
