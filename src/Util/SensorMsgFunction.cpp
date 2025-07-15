@@ -226,6 +226,9 @@ SENSOR_MSG(BullEnemyAttack);
 SENSOR_MSG(EnemyAttackStrong);
 SENSOR_MSG(EnemyObjBreak);
 SENSOR_MSG(WhipAttack);
+SENSOR_MSG_WITH_DATA(WhipBind, (WhipTargetInfo*, Info));
+SENSOR_MSG_WITH_DATA(WhipHold, (WhipTargetInfo*, Info));
+SENSOR_MSG_WITH_DATA_CUSTOM_CTOR(WhipThrow, ((sead::Vector3f, Vec)), ((const sead::Vector3f&, Vec))){ mVec.set(pVec); };
 SENSOR_MSG(NoLimitTouchJump);
 SENSOR_MSG(NoticePlayerDamage);
 SENSOR_MSG(StatueDrop);
@@ -359,6 +362,9 @@ SENSOR_MSG(TRexAttackCollideBody);
 SENSOR_MSG(TRexAttackCollideHead);
 SENSOR_MSG(TRexDashAttack);
 SENSOR_MSG(TRexScrollPartsBreakWith);
+SENSOR_MSG(TsukkunForceCancelCollide);
+SENSOR_MSG(TsukkunHoldCollide);
+SENSOR_MSG(TsukkunThroughCollide);
 SENSOR_MSG(TsukkunNoTrace);
 SENSOR_MSG(TouchFireDrum2D);
 SENSOR_MSG(PropellerAttack);
@@ -668,6 +674,9 @@ SEND_MSG_IMPL(BullEnemyAttack);
 SEND_MSG_IMPL(EnemyAttackStrong);
 SEND_MSG_IMPL(EnemyObjBreak);
 SEND_MSG_IMPL(WhipAttack);
+SEND_MSG_DATA_IMPL(WhipBind, WhipTargetInfo*);
+SEND_MSG_DATA_IMPL(WhipHold, WhipTargetInfo*);
+SEND_MSG_DATA_IMPL(WhipThrow, const sead::Vector3f&);
 SEND_MSG_IMPL(NoLimitTouchJump);
 SEND_MSG_IMPL(NoticePlayerDamage);
 SEND_MSG_IMPL(StatueDrop);
@@ -796,6 +805,9 @@ SEND_MSG_IMPL(TRexAttackCollideBody);
 SEND_MSG_IMPL(TRexAttackCollideHead);
 SEND_MSG_IMPL(TRexDashAttack);
 SEND_MSG_IMPL(TRexScrollPartsBreakWith);
+SEND_MSG_IMPL(TsukkunForceCancelCollide);
+SEND_MSG_IMPL(TsukkunHoldCollide);
+SEND_MSG_IMPL(TsukkunThroughCollide);
 SEND_MSG_IMPL(TsukkunNoTrace);
 SEND_MSG_IMPL(TouchFireDrum2D);
 SEND_MSG_IMPL(PropellerAttack);
@@ -1241,17 +1253,15 @@ IS_MSG_IMPL(TouchDoorDrumn);
 IS_MSG_IMPL(TouchFireDrum2D);
 IS_MSG_IMPL(TrashBoxIn);
 IS_MSG_IMPL(TRexAttack);
-//IS_MSG_IMPL(TRexAttackCollideAll);
 IS_MSG_IMPL(TRexAttackCollideBody);
 IS_MSG_IMPL(TRexAttackCollideHead);
+IS_MSG_MULTIPLE_IMPL(TRexAttackCollideAll, TRexAttackCollideBody, TRexAttackCollideBody);
 IS_MSG_IMPL(TRexDashAttack);
 IS_MSG_IMPL(TRexScrollPartsBreakWith);
-/* Lazy
 IS_MSG_IMPL(TsukkunForceCancelCollide);
 IS_MSG_IMPL(TsukkunHoldCollide);
 IS_MSG_IMPL(TsukkunThroughCollide);
-IS_MSG_IMPL(TsukkunThrustAll);
-*/
+//IS_MSG_IMPL(TsukkunThrustAll);
 /*
 IS_MSG_IMPL(TsukkunThrust, bool*);
 IS_MSG_IMPL(TsukkunThrustCollide, bool*);
@@ -1269,11 +1279,9 @@ IS_MSG_IMPL(WanwanPush);
 IS_MSG_IMPL(WanwanReboundAttack);
 IS_MSG_IMPL(WeaponItemGet);
 IS_MSG_IMPL(WhipAttack);
-/* Lazy
 IS_MSG_IMPL(WhipBind);
 IS_MSG_IMPL(WhipHold);
 IS_MSG_IMPL(WhipThrow);
-*/
 IS_MSG_IMPL(YokinBallAttack);
 IS_MSG_IMPL(YoshiDirectEat);
 IS_MSG_IMPL(YoshiTongueAttack);
@@ -1301,7 +1309,6 @@ IS_MSG_IMPL(TsukkunThrustHitReflectCollide, bool*);
 IS_MSG_IMPL(TsukkunThrustReflectCollide, bool*);
 IS_MSG_IMPL(SwitchOnWithSaveRequest, SaveObjInfo**);
 */
-//Lazy
 //IS_MSG_IMPL(NpcCapReactionAll);
 //IS_MSG_IMPL(HackNpcCapReactionAll);
 
