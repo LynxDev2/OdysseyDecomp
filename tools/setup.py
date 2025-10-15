@@ -19,7 +19,7 @@ from common.util.config import get_repo_root
 
 TARGET_PATH = setup.get_target_path()
 TARGET_ELF_PATH = setup.get_target_elf_path()
-CACHE_REPO_RELEASE_URL = "https://github.com/MonsterDruide1/OdysseyDecompToolsCache/releases/download/v1.2.3"
+CACHE_REPO_RELEASE_URL = "https://github.com/LynxDev2/OdysseyDecomp/raw/142b71595f4ea65563367a859d44be19c139a42b/OdysseyDecomp-binaries_x86_64-Linux.tar.xz"
 TARGET_UNCOMPRESSED_NSO_PATH = setup.config.get_versioned_data_path(setup.config.get_default_version()) / 'main.uncompressed.nso'
 LIBCXX_SRC_URL = "https://releases.llvm.org/3.9.1/libcxx-3.9.1.src.tar.xz"
 
@@ -149,7 +149,7 @@ def setup_project_tools(tools_from_source):
             path = tmpdir + f"/OdysseyDecomp-binaries_{target}"
             try:
                 print(">>> Downloading clang, lld and viking...")
-                url = CACHE_REPO_RELEASE_URL + urllib.parse.quote(f"/OdysseyDecomp-binaries_{target}.tar.xz")
+                url = CACHE_REPO_RELEASE_URL
                 urllib.request.urlretrieve(url, path)
                 print(">>> Extracting tools...")
                 with tarfile.open(path) as f:
