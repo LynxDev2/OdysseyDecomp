@@ -124,6 +124,8 @@ def setup_project_tools(tools_from_source):
         os.symlink(f"{get_repo_root()}/toolchain/bin/decompme", f"{get_repo_root()}/tools/decompme")
     if not exists_tool("listsym"):
         os.symlink(f"{get_repo_root()}/toolchain/bin/listsym", f"{get_repo_root()}/tools/listsym")
+    if not exists_tool("linter"):
+        os.symlink(f"{get_repo_root()}/toolchain/bin/linter", f"{get_repo_root()}/tools/linter")
 
     with tempfile.TemporaryDirectory() as tmpdir:
         if not exists_toolchain_file("include/__config"):
