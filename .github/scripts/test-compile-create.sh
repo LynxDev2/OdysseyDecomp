@@ -20,8 +20,12 @@ for f in $(find lib src -name '*.h'); do
     testinclude2="${testinclude1/src\//}"  # Replace leading src/ with ""
     testinclude3="${testinclude2/lib\/al\//}"  # Replace lib/al/ with ""
     testinclude4="${testinclude3/lib\/aarch64\//aarch64\/}"  # Replace lib/aarch64/ with aarch64/
-    echo "#include \"$testinclude4\"" > src/test/single/$testname
+    echo "#include \"$testinclude4\"" >> src/test/multi/all.cpp
 done
+
+if [ "$1" == "--all-combined-only" ]; then
+    exit
+fi
 
 for f in $(find lib src -name '*.h'); do
     if [[ $f == "lib/NintendoSDK/src/NintendoSDK"* || $f == *"/cafe/"* || $f == "lib/sead/include/prim/seadScopeGuard.h" ]]; then
@@ -32,13 +36,10 @@ for f in $(find lib src -name '*.h'); do
     testinclude2="${testinclude1/src\//}"  # Replace leading src/ with ""
     testinclude3="${testinclude2/lib\/al\//}"  # Replace lib/al/ with ""
     testinclude4="${testinclude3/lib\/aarch64\//aarch64\/}"  # Replace lib/aarch64/ with aarch64/
-    echo "#include \"$testinclude4\"" >> src/test/multi/all.cpp
+    echo "#include \"$testinclude4\"" > src/test/single/$testname
 done
 
 for f in $(find src -name '*.h'); do
-    if [[ $f == "lib/NintendoSDK/src/NintendoSDK"* || $f == *"/cafe/"* || $f == "lib/sead/include/prim/seadScopeGuard.h" ]]; then
-        continue
-    fi
     testname="${f//\//_}.cpp"  # Replace / with _
     testinclude1="${f/*\/include\//}"  # Replace .../include/ with ""
     testinclude2="${testinclude1/src\//}"  # Replace leading src/ with ""

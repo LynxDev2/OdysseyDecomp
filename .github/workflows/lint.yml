@@ -25,3 +25,28 @@ jobs:
       run: pip install capstone colorama cxxfilt pyelftools watchdog python-Levenshtein toml
     - name: Run custom code styling checks
       run: tools/check-format.py --ci
+
+  custom-libclang-lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        submodules: recursive
+    - name: Set up dependencies
+      run: sudo apt update && sudo apt install -y cmake clang
+    - name: Set up cache for toolchain
+      uses: actions/cache@v4
+      with:
+        key: tools_libs
+        path: |
+          toolchain/bin
+          toolchain/include
+          toolchain/cache-version-url.txt
+    - name: Create source file that includes all headers
+      run: bash ./.github/scripts/test-compile-create.sh --all-combined-only
+    - name: Run simplified setup
+      # We set "Unix Makefiles" as the cmake backend to avoid needing to install Ninja
+      # as we don't actually build the project through a build system here
+      run: tools/setup.py --project --cmake_backend "Unix Makefiles"
+    - name: Run OdysseyDecompLinter
+      run: tools/linter
