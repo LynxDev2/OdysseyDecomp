@@ -56,4 +56,7 @@ jobs:
       # as we don't actually build the project through a build system here
       run: tools/setup.py --project --cmake_backend "Unix Makefiles"
     - name: Run OdysseyDecompLinter
-      run: tools/linter
+      run: |
+        if tools/linter | tee /dev/tty | grep -qP '\x1b\[93m'; then
+            exit 1
+        fi
