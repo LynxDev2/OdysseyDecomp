@@ -54,6 +54,6 @@ jobs:
       run: |
         out="$(tools/linter)"
         echo $out
-        if echo $out | grep -qP '\x1b\[93m'; then
+        if echo $out | grep -q "$(printf '\x1b\[93m')"; then
             exit 1
         fi
