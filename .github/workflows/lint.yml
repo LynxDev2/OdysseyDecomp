@@ -27,20 +27,15 @@ jobs:
       run: tools/check-format.py --ci
 
   custom-libclang-lint:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v5
       with:
         submodules: recursive
     - name: Set up dependencies
-      run: sudo apt update && sudo apt install -y cmake clang
-    - name: Set up python
-      uses: actions/setup-python@v6
-      with:
-        python-version: '3.13'
-        cache: 'pip'
+      run: brew install cmake
     - name: Set up python package dependencies
-      run: pip install colorama cxxfilt pyelftools watchdog toml
+      run: python3 -m pip install colorama cxxfilt pyelftools watchdog toml
     - name: Set up cache for toolchain
       uses: actions/cache@v4
       with:
