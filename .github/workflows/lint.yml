@@ -35,7 +35,7 @@ jobs:
     - name: Set up dependencies
       run: brew install cmake
     - name: Set up python package dependencies
-      run: python3 -m pip install colorama cxxfilt pyelftools watchdog toml
+      run: pip3 install colorama cxxfilt pyelftools watchdog toml --break-system-packages
     - name: Set up cache for toolchain
       uses: actions/cache@v4
       with:

@@ -19,7 +19,7 @@ from common.util.config import get_repo_root
 
 TARGET_PATH = setup.get_target_path()
 TARGET_ELF_PATH = setup.get_target_elf_path()
-CACHE_REPO_RELEASE_URL = "https://github.com/LynxDev2/OdysseyDecomp/raw/142b71595f4ea65563367a859d44be19c139a42b/OdysseyDecomp-binaries_x86_64-Linux.tar.xz"
+CACHE_REPO_RELEASE_URL = "https://github.com/LynxDev2/OdysseyDecomp/raw/5850398e90a8ee3a3c69206c27b9599161b57492/OdysseyDecomp-binaries_arm64-Darwin.tar.xz"
 TARGET_UNCOMPRESSED_NSO_PATH = setup.config.get_versioned_data_path(setup.config.get_default_version()) / 'main.uncompressed.nso'
 LIBCXX_SRC_URL = "https://releases.llvm.org/3.9.1/libcxx-3.9.1.src.tar.xz"
 
