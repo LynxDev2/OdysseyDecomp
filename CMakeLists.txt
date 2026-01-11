@@ -51,3 +51,11 @@ target_link_libraries(odyssey PUBLIC agl)
 
 add_subdirectory(lib/eui)
 target_link_libraries(odyssey PUBLIC eui)
+
+add_custom_command(
+    OUTPUT main.elf
+    COMMAND bash -c "aarch64-linux-gnu-ld -o main.elf $<JOIN:$<TARGET_OBJECTS:odyssey>, > -L${CMAKE_SOURCE_DIR}/data/libs --whole-archive -lsmobase -lsdk -lsubsdk0 -lglslc -T${CMAKE_SOURCE_DIR}/toolchain/main.lcf -pie -z now --allow-multiple-definition"
+    DEPENDS odyssey
+)
+
+add_custom_target(main DEPENDS main.elf)
