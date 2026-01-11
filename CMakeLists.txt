@@ -58,4 +58,10 @@ add_custom_command(
     DEPENDS odyssey
 )
 
-add_custom_target(main DEPENDS main.elf)
+add_custom_command(
+    OUTPUT main.nso
+    COMMAND "${CMAKE_SOURCE_DIR}/toolchain/bin/elf2nso" main.elf -o main.nso
+    DEPENDS main.elf
+)
+
+add_custom_target(main DEPENDS main.nso)
