@@ -1,8 +1,6 @@
 #include "Scene/ProjectCameraPoserFactory.h"
 
-#include "Library/Camera/CreateCameraPoserFunction.h"
-
-const al::NameToCreator<al::CameraPoserCreatorFunction> sProjectCameraPoserFactoryEntries1[] = {
+[[maybe_unused]] const al::NameToCreator<al::CameraPoserCreatorFunction> sProjectCameraPoserFactoryEntries1[] = {
     /* CameraPoserFollowLimit */ {"制限付きフォロー", nullptr},
     /* CameraPoserFollowLimit */ {"制限付き平行", nullptr},
     /* CameraPoserFollowLimit */ {"2D平行", nullptr},
@@ -18,7 +16,7 @@ const al::NameToCreator<al::CameraPoserCreatorFunction> sProjectCameraPoserFacto
     /* al::CameraPoserTalk */ {"会話用2点間", nullptr},
     /* al::CameraPoserRailMoveMovie */ {"映像撮影レール", nullptr}};
 
-const al::NameToCreator<al::CameraPoserCreatorFunction> sProjectCameraPoserFactoryEntries2[] = {
+[[maybe_unused]] const al::NameToCreator<al::CameraPoserCreatorFunction> sProjectCameraPoserFactoryEntries2[] = {
     /* al::CameraPoserBossBattle */ {"ボス戦カメラ", nullptr},
     /* al::CameraPoserEntrance */ {"スタート", nullptr},
     /* al::CameraPoserLookBoard */ {"看板用2点間", nullptr},
@@ -31,8 +29,11 @@ const al::NameToCreator<al::CameraPoserCreatorFunction> sProjectCameraPoserFacto
     /* ScenarioStartCameraPoserSimpleZoom */ {"シナリオ紹介シンプルズームカメラ", nullptr},
     /* ScenarioStartCameraPoserRailMove */ {"シナリオ紹介レール移動カメラ", nullptr}};
 
+/*
+ * Don't override with null entries
 ProjectCameraPoserFactory::ProjectCameraPoserFactory()
     : CameraPoserFactory("プロジェクトカメラファクトリー") {
     alCameraPoserFactoryFunction::initAndCreateTableFromOtherTable(
         this, sProjectCameraPoserFactoryEntries1, sProjectCameraPoserFactoryEntries2);
 }
+*/

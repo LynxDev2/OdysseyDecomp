@@ -2,6 +2,8 @@
 
 #include <prim/seadStringUtil.h>
 
+// Some functions in this file are excluded because the linker complains about them when linking `main.elf`
+
 namespace al {
 const char* createStringIfInStack(const char* str) {
     if (!isInStack(str))
@@ -169,6 +171,7 @@ bool tryReplaceStringNoRecursive(sead::BufferedSafeString* out, const char* targ
     return true;
 }
 
+/*
 bool isEqualString(const char16* str1, const char16* str2) {
     while (*str1 == *str2) {
         char16 val = *str1;
@@ -182,6 +185,7 @@ bool isEqualString(const char16* str1, const char16* str2) {
 
     return false;
 }
+*/
 
 bool isEqualSubString(const char* str, const char* subStr) {
     return strstr(str, subStr) != nullptr;
@@ -311,6 +315,7 @@ __attribute__((noinline)) bool isInStack(const void* element) {
     return sead::MemUtil::isStack(element);
 }
 
+/*
 // Attr required for isEndWithString
 __attribute__((noinline)) bool isEqualString(const char* str1, const char* str2) {
     while (*str1 == *str2) {
@@ -341,6 +346,7 @@ bool isEqualString(const sead::SafeString& safestr1, const sead::SafeString& saf
 
     return false;
 }
+*/
 
 bool isEqualStringCase(const char* str1, const char* str2) {
     return compareStringIgnoreCase(str1, str2) == 0;

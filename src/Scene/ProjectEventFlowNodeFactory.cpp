@@ -1,8 +1,7 @@
 #include "Scene/ProjectEventFlowNodeFactory.h"
 
-#include "Library/Event/CreateEventFlowNode.h"
 
-const al::NameToCreator<al::EventFlowNodeCreatorFunction> sProjectEventFlowNodeFactoryEntries[] = {
+[[maybe_unused]] const al::NameToCreator<al::EventFlowNodeCreatorFunction> sProjectEventFlowNodeFactoryEntries[] = {
     {"ActionLoop", nullptr},
     {"ActionOneTime", nullptr},
     {"ActorBaseMovementEnd", nullptr},
@@ -103,7 +102,9 @@ const al::NameToCreator<al::EventFlowNodeCreatorFunction> sProjectEventFlowNodeF
     {"WaitSimple", nullptr},
     {"WipeFadeBlackClose", nullptr},
     {"WipeFadeBlackOpen", nullptr}};
-
+/*
+* Don't override with null entries
 ProjectEventFlowNodeFactory::ProjectEventFlowNodeFactory() : EventFlowNodeFactory() {
     initFactory(sProjectEventFlowNodeFactoryEntries);
 }
+*/

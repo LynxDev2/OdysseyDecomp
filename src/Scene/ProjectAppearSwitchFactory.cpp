@@ -10,7 +10,7 @@
 #include "Library/MapObj/WobbleMapParts.h"
 
 // FIXME fill in method references: (1.0) off_7101D89F18
-const al::NameToCreator<al::ActorCreatorFunction> sProjectAppearSwitchFactoryEntries[] = {
+[[maybe_unused]] const al::NameToCreator<al::ActorCreatorFunction> sProjectAppearSwitchFactoryEntries[] = {
     {"FixMapParts", al::createActorFunction<al::FixMapParts>},
     {"FallMapParts", al::createActorFunction<al::FallMapParts>},
     {"CapHanger", nullptr},
@@ -31,6 +31,9 @@ const al::NameToCreator<al::ActorCreatorFunction> sProjectAppearSwitchFactoryEnt
     {"WaveSurfMapParts", nullptr},
     {"WobbleMapParts", al::createActorFunction<al::WobbleMapParts>}};
 
+/*
+ * Don't override with null entries
 ProjectAppearSwitchFactory::ProjectAppearSwitchFactory() : ActorFactory("アクター生成") {
     initFactory(sProjectAppearSwitchFactoryEntries);
 }
+*/

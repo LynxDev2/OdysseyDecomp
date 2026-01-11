@@ -14,6 +14,11 @@
 static sead::DirectoryEntry sEntries[0x1000];
 
 namespace al {
+/*
+
+ * These functions are excluded because they cause linker errors when linking `main.elf`
+ * since the `ArchiveFileDevice` ctor is missing
+
 Resource::Resource(const sead::SafeString& path)
     : mPath(path), mHeap(sead::HeapMgr::instance()->getCurrentHeap()) {
     mArchive = loadArchive(path);
@@ -25,6 +30,7 @@ Resource::Resource(const sead::SafeString& path, sead::ArchiveRes* archive)
     mArchive = archive;
     mDevice = new sead::ArchiveFileDevice(mArchive);
 }
+*/
 
 bool Resource::isExistFile(const sead::SafeString& filePath) const {
     bool exists = false;
