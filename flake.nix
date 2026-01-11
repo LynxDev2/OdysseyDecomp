@@ -47,6 +47,8 @@
             openssl
             ncurses5
             ncurses6
+            pkgsCross.aarch64-multiplatform.buildPackages.binutils
+            ncftp
           ];
           env = {
             LD_LIBRARY_PATH = "${pkgs.lib.makeLibraryPath buildInputs}";
