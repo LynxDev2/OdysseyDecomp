@@ -1,5 +1,7 @@
 #pragma once
 
+#include <basis/seadTypes.h>
+
 #include "Library/Anim/DitherAnimator.h"
 
 namespace al {
@@ -13,6 +15,10 @@ public:
 
     ActorDitherAnimator(LiveActor* host);
 
+    void reset();
+    f32 getDitherAlpha() const;
+    void setClippingJudgeDistanceParam(const char*);
+    void resetClippingJudgeDistanceParam();
     void validateDitherAnim();
     void invalidateDitherAnim();
 

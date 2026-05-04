@@ -23,6 +23,8 @@ public:
     al::LiveActor* tryFindModelActor(const char* name) const;
     bool isCurrentModelLabel(const char* name) const;
     bool isCurrentModelLabelSubString(const char* name) const;
+    al::LiveActor* getCurrentModelActor() const { return mCurrentModel->actor; }
+    const sead::SafeString& getAnimSuffix() const { return _18; }
 
 private:
     sead::PtrArray<Entry> mBuffer;

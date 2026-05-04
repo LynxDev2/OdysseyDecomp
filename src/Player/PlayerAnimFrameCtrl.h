@@ -15,10 +15,13 @@ public:
     void update();
     void updateSync(al::LiveActor* player);
     void setFrame(f32 frame);
+    void setRate(f32 rate) { mRate = rate; }
 
     const char* getActionName() const;
     f32 getCurrentFrame() const;
+    f32 getActionFrameMax() const { return mActionFrameMax; }
     f32 getRate() const;
+    bool isActionOneTime() const { return !mIsActionRepeat; }
     bool isActionEnd() const;
 
 private:

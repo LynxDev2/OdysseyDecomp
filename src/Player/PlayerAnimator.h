@@ -82,25 +82,26 @@ public:
     bool isSubAnimPlaying() const { return mIsSubAnimPlaying; }
 
 private:
-    PlayerModelHolder* mModelHolder;
+    const PlayerModelHolder* mModelHolder;
     al::LiveActor* mPlayerDeco;
     al::LiveActor* mPlayer;
     PlayerAnimFrameCtrl* mAnimFrameCtrl;
-    sead::FixedSafeString<64> mCurAnim;
-    sead::FixedSafeString<64> mCurSubAnim;
-    sead::FixedSafeString<64> mCurUpperBodyAnim;
-    sead::FixedSafeString<64> _128;
+    sead::FixedSafeString<64> mCurAnim = {""};
+    sead::FixedSafeString<64> mCurSubAnim = {""};
+    sead::FixedSafeString<64> mCurUpperBodyAnim = {""};
+    sead::FixedSafeString<64> _128 = {""};
     al::ActorDitherAnimator* mDitherAnim;
     f32* mSklAnimBlendWeights;
-    void* _190;
+    f32 mEyeControlAnimFrame;
+    s32 mEndEyeControlAnimDelay;
     f32 mRunStartAnimRate;
-    s32 _19c;
+    s32 mModelAlphaInvalidateCounter;
     bool mIsNeedFullFaceAnim;
-    bool _1a1;
+    bool mIsBlendWeightEnabled;
     bool mIsSubAnimPlaying;
-    bool _1a3;
+    bool mIsUpperBodyAnimPlaying;
     bool mIsUpperBodyAnimHeadVisKeep;
-    bool _1a5;
+    bool mIsEyeControlAnim;
     bool _1a6;
     bool mIsSubAnimOnlyAir;
 };
