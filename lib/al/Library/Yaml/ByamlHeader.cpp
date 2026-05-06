@@ -61,7 +61,8 @@ u32 ByamlStringTableIter::getStringAddress(s32 index) const {
 
 // NON_MATCHING: regalloc (https://decomp.me/scratch/AdRVH)
 u32 ByamlStringTableIter::getEndAddress() const {
-    u32 val = getAddressTable()[getSize()];
+    s32 size = getSize();
+    u32 val = getAddressTable()[size];
     return mIsRev ? bswap_32(val) : val;
 }
 
@@ -211,7 +212,7 @@ bool verifiByaml(const u8* data) {
 // NON_MATCHING: missing & 0xFFFF (https://decomp.me/scratch/dRP3R)
 bool verifiByamlHeader(const u8* data) {
     const al::ByamlHeader* header = reinterpret_cast<const al::ByamlHeader*>(data);
-    return header->getTag() == BYAML_BE_TAG && (u32)(header->getVersion() - 1) < 3;
+    return header->getTag() == BYAML_BE_TAG && (u32)((header->getVersion() - 1) & 0xFFFF) < 3;
 }
 
 bool verifiByamlStringTable(const u8* data, bool isRev) {

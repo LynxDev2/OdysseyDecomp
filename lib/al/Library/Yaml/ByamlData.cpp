@@ -153,7 +153,8 @@ bool ByamlArrayIter::getDataByIndex(ByamlData* data, s32 index) const {
 
 // NON_MATCHING: regalloc (https://decomp.me/scratch/dGFdU)
 const u32* ByamlArrayIter::getDataTable() const {
-    return reinterpret_cast<const u32*>(getOffsetData((getSize() + 7) & 0xFFFFFFFC));
+    s32 size = getSize();
+    return reinterpret_cast<const u32*>(getOffsetData((size + 7) & 0xFFFFFFFC));
 }
 
 const u8* ByamlArrayIter::getOffsetData(u32 off) const {

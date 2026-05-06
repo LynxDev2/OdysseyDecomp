@@ -5,6 +5,15 @@
 namespace al {
 class ByamlIter;
 
+struct ActorScoreInfo {
+    ActorScoreInfo();
+
+    void init(const ByamlIter& iter);
+
+    const char* factorName = nullptr;
+    const char* categoryName = nullptr;
+};
+
 class ActorScoreKeeper {
 public:
     struct Entry {
@@ -15,8 +24,8 @@ public:
     ActorScoreKeeper();
 
     void init(const ByamlIter& iter);
-    void getCategoryName();  // unknown return type
-    const char* tryGetCategoryName(const char* a1);
+    const char* getCategoryName() const;
+    const char* tryGetCategoryName(const char* factorName) const;
 
 private:
     inline void allocArray();
