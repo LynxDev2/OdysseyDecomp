@@ -11,7 +11,7 @@ class SensorMsg;
 
 class HipDropSwitch : public al::LiveActor {
 public:
-    HipDropSwitch(const char*);
+    HipDropSwitch(const char* name);
     void init(const al::ActorInitInfo& info) override;
     void reset();
     void control() override;
@@ -20,8 +20,8 @@ public:
                     al::HitSensor* self) override;
     void startClipped() override;
     bool isOnWait() const;
-    void writeSave();
-    void validateSwitchByCage();
+    s64 writeSave();
+    bool validateSwitchByCage();
     void invalidateSwitchByCage();
     void exeOffWait();
     void exeReactionLand();
@@ -39,4 +39,5 @@ private:
     void* _128;
 };
 
+static_assert(sizeof(HipDropSwitch) == 0x130);
 static_assert(sizeof(HipDropSwitch) == 0x130);

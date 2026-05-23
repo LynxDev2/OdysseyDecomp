@@ -17,10 +17,10 @@ public:
     void attackSensor(al::HitSensor* self, al::HitSensor* other) override;
     bool receiveMsg(const al::SensorMsg* message, al::HitSensor* other,
                     al::HitSensor* self) override;
-    void appearByGenerator(const sead::Vector3f&, const sead::Quatf&, f32);
+    void appearByGenerator(const sead::Vector3f& pos, const sead::Quatf& quat, f32 byGenerator);
     void startMove();
     void exeWait();
-    void exeMove();
+    f32 exeMove();
 
     ActorDimensionKeeper* getActorDimensionKeeper() const override { return mDimensionKeeper; }
 
@@ -33,4 +33,5 @@ private:
     s32 _128;
 };
 
+static_assert(sizeof(Barrel2D) == 0x130);
 static_assert(sizeof(Barrel2D) == 0x130);

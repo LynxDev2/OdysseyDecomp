@@ -1,5 +1,7 @@
 #pragma once
 
+#include <basis/seadTypes.h>
+
 #include "Library/LiveActor/LiveActor.h"
 
 class WanwanHole : public al::LiveActor {
@@ -13,4 +15,5 @@ public:
     void exeIn();
 };
 
+static_assert(sizeof(WanwanHole) == 0x108);
 static_assert(sizeof(WanwanHole) == 0x108);

@@ -1,20 +1,18 @@
 #pragma once
 
 #include <basis/seadTypes.h>
-#include <container/seadPtrArray.h>
 
 #include "Library/LiveActor/LiveActor.h"
 
 namespace al {
-struct ActorInitInfo;
 class HitSensor;
 class SensorMsg;
+struct ActorInitInfo;
 }  // namespace al
 
 class Car : public al::LiveActor {
 public:
     Car(const char* name);
-
     void init(const al::ActorInitInfo& info) override;
     void kill() override;
     void calcAnim() override;
@@ -36,4 +34,5 @@ private:
     sead::PtrArray<Car>* mWatcherArray = nullptr;
 };
 
+static_assert(sizeof(Car) == 0x178);
 static_assert(sizeof(Car) == 0x178);

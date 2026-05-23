@@ -1,34 +1,37 @@
 #pragma once
 
+#include <basis/seadTypes.h>
 #include <container/seadOffsetList.h>
+#include <math/seadMatrix.h>
+#include <math/seadQuat.h>
+#include <math/seadVector.h>
 
 #include "Library/LiveActor/LiveActor.h"
 
-class CapTargetInfo;
-class EnemyStateSwoon;
-class EnemyStateReset;
-class EnemyStateWander;
-class ActorStateSandGeyser;
-class KuriboStateHack;
-class EnemyStateBlowDown;
-class EnemyCap;
-class CollisionPartsFilterBase;
-class PlayerPushReceiver;
-class CollisionMultiShape;
-class CollisionShapeKeeper;
-class PlayerCeilingCheck;
-class DisregardReceiver;
-
 namespace al {
-class WaterSurfaceFinder;
 class JointSpringControllerHolder;
-
+class WaterSurfaceFinder;
 }  // namespace al
+
+class ActorStateSandGeyser;
+class CapTargetInfo;
+class CollisionMultiShape;
+class CollisionPartsFilterBase;
+class CollisionShapeKeeper;
+class DisregardReceiver;
+class EnemyCap;
+class EnemyStateBlowDown;
+class EnemyStateReset;
+class EnemyStateSwoon;
+class EnemyStateWander;
+class KuriboStateHack;
+class PlayerCeilingCheck;
+class PlayerPushReceiver;
 
 class KuriboHack : public al::LiveActor {
 public:
-    KuriboHack(const char*);
-    void init(const al::ActorInitInfo&) override;
+    KuriboHack(const char* name);
+    void init(const al::ActorInitInfo& info) override;
     void initAfterPlacement() override;
     void appear() override;
     void makeActorAlive() override;
@@ -43,32 +46,31 @@ public:
                     al::HitSensor* self) override;
     void control() override;
     void updateCollider() override;
-
-    void tryCreateEnemyCap(const al::ActorInitInfo&);
+    bool tryCreateEnemyCap(const al::ActorInitInfo& info);
     void setNerveRideOnCommon();
     void resetRideOnPosBottomWithDefaultParam();
     void onSnapShotMode();
     void offSnapShotMode();
     void onDynamics();
-    void detach(KuriboHack*);
+    void detach(KuriboHack* kuriboHack);
     bool checkSandSinkPrecisely() const;
-    void solveCollisionInHacking(const sead::Vector3f&);
-    void pushFrom(KuriboHack*, const sead::Vector3f&);
-    void updateCapLockOnMtx();
+    s64 solveCollisionInHacking(const sead::Vector3f& moveDir);
+    s64 pushFrom(KuriboHack* kuriboHack, const sead::Vector3f& pushDir);
+    const sead::Vector4f& updateCapLockOnMtx();
     void forceStartClipped();
     void appearFall();
-    void noRevive();
+    s64 noRevive();
     void exeWait();
-    void setShiftTypeOnGround(s32);
+    void setShiftTypeOnGround(s32 shiftType);
     void offDynamics();
     void syncRideOnPosBottomWithDefaultParam();
     void exeWander();
     bool tryShiftDrown();
     void exeTurn();
-    void exeFind();
-    void exeChase();
-    void exeStop();
-    void exeAttack();
+    f32 exeFind();
+    f32 exeChase();
+    f32 exeStop();
+    f32 exeAttack();
     void exePressDown();
     void exeBlowDown();
     void exeDamageCap();
@@ -76,7 +78,7 @@ public:
     void exeLand();
     bool tryShiftChaseOrWander();
     void exeSink();
-    bool updateSink();
+    void updateSink();
     void exeSlide();
     void exeReset();
     void exeSandGeyser();
@@ -85,38 +87,43 @@ public:
     void exeTowerHackEnd();
     void exeHack();
     void invalidateHackDamage();
-    void shiftWaitHack();
+    s64 shiftWaitHack();
     void endHack();
     void exeRideOn();
     void endRideOn();
     void exeDrown();
     void exeEatBind();
-    void prepareKillByShineGet();
-    bool tryReceiveMsgHack(const al::SensorMsg*, al::HitSensor*, al::HitSensor*);
-    bool tryReceiveMsgWaitHack(const al::SensorMsg*, al::HitSensor*, al::HitSensor*);
-    bool tryReceiveMsgRideOn(const al::SensorMsg*, al::HitSensor*, al::HitSensor*);
-    bool tryReceiveMsgEatBind(const al::SensorMsg*, al::HitSensor*, al::HitSensor*);
-    bool tryReceiveMsgNormal(const al::SensorMsg*, al::HitSensor*, al::HitSensor*);
-    void transferGroup(sead::OffsetList<KuriboHack>*);
-    void eraseFromHost();
-    void notifyJumpSink(f32);
+    s64 prepareKillByShineGet();
+    bool tryReceiveMsgHack(const al::SensorMsg* message, al::HitSensor* other, al::HitSensor* self);
+    bool tryReceiveMsgWaitHack(const al::SensorMsg* message, al::HitSensor* other,
+                               al::HitSensor* self);
+    bool tryReceiveMsgRideOn(const al::SensorMsg* message, al::HitSensor* other,
+                             al::HitSensor* self);
+    bool tryReceiveMsgEatBind(const al::SensorMsg* message, al::HitSensor* other,
+                              al::HitSensor* self);
+    bool tryReceiveMsgNormal(const al::SensorMsg* message, al::HitSensor* other,
+                             al::HitSensor* self);
+    s64 transferGroup(sead::OffsetList<KuriboHack>* kuriboTowerList);
+    s64 eraseFromHost();
+    void notifyJumpSink(f32 sinkAmount);
     bool isSinking() const;
-    void syncRideOnPosBottom(f32, f32);
-    void resetRideOnPosBottom(f32);
-    void validateSpecialPush(u32);
+    void syncRideOnPosBottom(f32 rideOnRadius, f32 bottomOffset);
+    void resetRideOnPosBottom(f32 bottomOffset);
+    bool validateSpecialPush(u32 frameMax);
     void startRideOnRotation();
-    void applyRideOnQuat(const sead::Quatf&);
+    s64 applyRideOnQuat(const sead::Quatf& quat);
     bool isInvalidHackDamage() const;
-    void validateHipDropProbe(al::HitSensor*);
-    s32 indexInHostList() const;
+    bool validateHipDropProbe(al::HitSensor* sensor);
+    s64 indexInHostList() const;
     f32 getRideOnRowSize();
     bool isCapWorn() const;
     bool isEnableHack() const;
-    void trySetHipDropActor(const al::SensorMsg*, al::HitSensor*);
+    bool trySetHipDropActor(const al::SensorMsg* message, al::HitSensor* sensor);
     void addCapToHackDemo();
-    bool tryReceiveMsgPush(const al::SensorMsg*, al::HitSensor*, al::HitSensor*);
-    bool tryRideOnHack(const al::SensorMsg*, al::HitSensor*, al::HitSensor*);
-    void notifyKillByShineGetToGroup(const al::SensorMsg*, al::HitSensor*, al::HitSensor*);
+    bool tryReceiveMsgPush(const al::SensorMsg* message, al::HitSensor* other, al::HitSensor* self);
+    bool tryRideOnHack(const al::SensorMsg* message, al::HitSensor* other, al::HitSensor* self);
+    void notifyKillByShineGetToGroup(const al::SensorMsg* message, al::HitSensor* other,
+                                     al::HitSensor* self);
 
 private:
     CapTargetInfo* mCapTargetInfo;

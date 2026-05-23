@@ -1,26 +1,29 @@
 #pragma once
 
+#include <basis/seadTypes.h>
+#include <math/seadQuat.h>
 #include <math/seadVector.h>
 
 #include "Library/LiveActor/LiveActor.h"
 
 #include "Util/IUseDimension.h"
 
+class ActorDimensionKeeper;
+
 class Shine : public al::LiveActor, public IUseDimension {
 public:
-    Shine(const char*);
-
+    Shine(const char* name);
     void init(const al::ActorInitInfo& info) override;
-    al::LiveActor* getCurrentModel();
+    s64 getCurrentModel();
     bool tryExpandShadowAndClipping();
-    void initAppearDemo(const al::ActorInitInfo&);
+    void initAppearDemo(const al::ActorInitInfo& info);
     void onAppear();
     void offAppear();
     void hideAllModel();
     void invalidateKillSensor();
     void initAfterPlacement() override;
     void getDirect();
-    void updateHintTrans(const sead::Vector3f&) const;
+    void updateHintTrans(const sead::Vector3f& hintTrans) const;
     void appear() override;
     void makeActorAlive() override;
     void makeActorDead() override;
@@ -32,42 +35,41 @@ public:
     void showCurrentModel();
     void appearPopup();
     void addDemoActorWithModel();
-    void get();
+    s64 get();
     void endClipped() override;
-    void initAppearDemoFromHost(const al::ActorInitInfo&, const sead::Vector3f&);
-    void initAppearDemoFromHost(const al::ActorInitInfo&);
-    void initAppearDemoActorCamera(const al::ActorInitInfo&);
-    void createShineEffectInsideObject(const al::ActorInitInfo&, const sead::Vector3f&,
-                                       const char*);
+    void initAppearDemoFromHost(const al::ActorInitInfo& info, const sead::Vector3f& hostTrans);
+    void initAppearDemoFromHost(const al::ActorInitInfo& info);
+    void initAppearDemoActorCamera(const al::ActorInitInfo& info);
+    void createShineEffectInsideObject(const al::ActorInitInfo& info,
+                                       const sead::Vector3f& effectOffset, const char* modelName);
     bool isGot() const;
     bool isEmptyShineForDemoGetGrand() const;
     void setShopShine();
     bool isEndAppear() const;
     bool isEndAppearGK() const;
     void onSwitchGet();
-    s32 getColorFrame() const;
-    void setHintPhotoShine(const al::ActorInitInfo&);
+    s64 getColorFrame() const;
+    void setHintPhotoShine(const al::ActorInitInfo& info);
     bool appearCommon();
     bool tryChangeCoin();
-    void tryAppearOrDemoAppear();
-
-    void appearPopup(const sead::Vector3f&);
-    void appearPopupDelay(s32);
-    void appearPopupSlot(const sead::Vector3f&);
-    void appearWarp(const sead::Vector3f&, const sead::Vector3f&);
+    bool tryAppearOrDemoAppear();
+    void appearPopup(const sead::Vector3f& trans);
+    void appearPopupDelay(s32 delayFrame);
+    void appearPopupSlot(const sead::Vector3f& trans);
+    void appearWarp(const sead::Vector3f& trans, const sead::Vector3f& warpTrans);
     void appearStatic();
     void appearPopupWithoutDemo();
-    void appearPopupGrandByBoss(s32);
+    void appearPopupGrandByBoss(s32 delayFrame);
     void appearPopupWithoutWarp();
-    void appearAndJoinBossDemo(const char*, const sead::Quatf&, const sead::Vector3f&);
-
+    void appearAndJoinBossDemo(const char* demoName, const sead::Quatf& quat,
+                               const sead::Vector3f& trans);
     void endBossDemo();
-    void endBossDemoAndStartFall(f32);
+    void endBossDemoAndStartFall(f32 fallSpeed);
     void appearWait();
-    void appearWait(const sead::Vector3f&);
+    void appearWait(const sead::Vector3f& trans);
     void startHold();
     void startFall();
-    void getDirectWithDemo();
+    const sead::Vector3f& getDirectWithDemo();
     void addDemoModelActor();
     void setGrandShine();
     void exeWaitRequestDemo();
@@ -75,8 +77,7 @@ public:
     void exeDemoAppear();
     bool tryWaitCameraInterpole() const;
     bool tryStartAppearDemo();
-    void calcCameraAt();
-
+    s64 calcCameraAt();
     void exeDemoMove();
     void updateIgnoreFrame();
     void exeDemoWait();
@@ -106,7 +107,6 @@ public:
     void exeHide();
     void exeReaction();
     void exeCoin();
-
     void updateModelActorResetPosition();
     ActorDimensionKeeper* getActorDimensionKeeper() const override;
 
@@ -125,6 +125,7 @@ private:
     void* filler3[29];
 };
 
+static_assert(sizeof(Shine) == 0x380);
 static_assert(sizeof(Shine) == 0x380);
 
 namespace ShineFunction {

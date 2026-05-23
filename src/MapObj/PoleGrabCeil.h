@@ -1,16 +1,17 @@
 #pragma once
 
+#include <basis/seadTypes.h>
 #include <math/seadMatrix.h>
 #include <math/seadVector.h>
 
 #include "Library/LiveActor/LiveActor.h"
 
 namespace al {
-struct ActorInitInfo;
 class HitSensor;
 class KeyMoveFollowTarget;
 class MtxConnector;
 class SensorMsg;
+struct ActorInitInfo;
 }  // namespace al
 
 class PoleGrabCeil : public al::LiveActor {
@@ -35,4 +36,5 @@ private:
     sead::Matrix34f mSurfaceMatrix = sead::Matrix34f::ident;
 };
 
+static_assert(sizeof(PoleGrabCeil) == 0x160);
 static_assert(sizeof(PoleGrabCeil) == 0x160);

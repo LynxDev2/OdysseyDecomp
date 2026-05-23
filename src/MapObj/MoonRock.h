@@ -9,15 +9,17 @@
 
 namespace al {
 class AddDemoInfo;
-struct ActorInitInfo;
 class CameraTicket;
 class HitSensor;
 class PlacementId;
 class SensorMsg;
+struct ActorInitInfo;
 }  // namespace al
+
 class CapMessageEnableChecker;
 class ChangeStageInfo;
 class GoalMark;
+class IUseDemoSkip;
 
 class MoonRock : public al::LiveActor, public IUseDemoSkip {
 public:
@@ -59,4 +61,5 @@ private:
     s32 mWreckagePoseType;
 };
 
+static_assert(sizeof(MoonRock) == 0x180);
 static_assert(sizeof(MoonRock) == 0x180);

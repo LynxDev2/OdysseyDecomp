@@ -1,5 +1,7 @@
 #pragma once
 
+#include <basis/seadTypes.h>
+
 #include "Library/LiveActor/LiveActor.h"
 
 namespace al {
@@ -15,4 +17,6 @@ public:
 private:
     bool mIsStatic = false;
 };
+
+static_assert(sizeof(FixMapParts) == 0x110);
 }  // namespace al

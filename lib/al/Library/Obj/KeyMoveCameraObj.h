@@ -5,25 +5,25 @@
 #include "Library/LiveActor/LiveActor.h"
 
 namespace al {
-struct ActorInitInfo;
 class CameraPoser;
 class CameraTicket;
+struct ActorInitInfo;
 
 class KeyMoveCameraObj : public LiveActor {
 public:
-    KeyMoveCameraObj(const char*);
+    KeyMoveCameraObj(const char* name);
     void init(const ActorInitInfo& info) override;
     void initAfterPlacement() override;
-    void switchCamera(s32);
+    void switchCamera(s32 camera);
     void appear() override;
     void control() override;
-    CameraPoser* getCurrentCamera() const;
-    CameraTicket* getCurrentCameraTicket() const;
+    s64 getCurrentCamera() const;
+    s64 getCurrentCameraTicket() const;
     void kill() override;
     void setFirstCameraStartInterpoleStepDefault();
-    void validateStartAtNearestPosition();
-    void setPlaySumStep(s32);
-    void setEndWaitStep(s32);
+    bool validateStartAtNearestPosition();
+    void setPlaySumStep(s32 playSumStep);
+    void setEndWaitStep(s32 endWaitStep);
 
 private:
     bool* _108;
@@ -34,5 +34,4 @@ private:
 };
 
 static_assert(sizeof(KeyMoveCameraObj) == 0x128);
-
 }  // namespace al

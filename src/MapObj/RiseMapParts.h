@@ -5,15 +5,15 @@
 #include "Library/LiveActor/LiveActor.h"
 
 namespace al {
-struct ActorInitInfo;
 class HitSensor;
 class SensorMsg;
+struct ActorInitInfo;
 }  // namespace al
 
 class RiseMapParts : public al::LiveActor {
 public:
-    RiseMapParts(const char*);
-    void init(const al::ActorInitInfo&) override;
+    RiseMapParts(const char* name);
+    void init(const al::ActorInitInfo& info) override;
     void initAfterPlacement() override;
     bool receiveMsg(const al::SensorMsg* message, al::HitSensor* other,
                     al::HitSensor* self) override;
@@ -21,7 +21,6 @@ public:
     void control() override;
     void setStop();
     void setStopPose();
-
     void exeWait();
     void exeMove();
     void start();
@@ -34,4 +33,5 @@ private:
     void* filler[6];
 };
 
+static_assert(sizeof(RiseMapParts) == 0x138);
 static_assert(sizeof(RiseMapParts) == 0x138);

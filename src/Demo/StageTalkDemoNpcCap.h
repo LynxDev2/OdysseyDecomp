@@ -11,20 +11,19 @@ struct ActorInitInfo;
 
 class StageTalkDemoNpcCap : public al::LiveActor, public al::IEventFlowEventReceiver {
 public:
-    StageTalkDemoNpcCap(const char*, s32, s32);
-
-    void init(const al::ActorInitInfo&) override;
+    StageTalkDemoNpcCap(const char* name, s32 demoType = 0, s32 demoPattern = 0);
+    void init(const al::ActorInitInfo& info) override;
     void startDemo();
     bool isEnableShowDemoAfterOpenMoonRockFirst() const;
     bool isEnableShowDemoMoonRockMapWorld() const;
     bool isSceneDemo() const;
     void kill() override;
-    bool receiveEvent(const al::EventFlowEventData*) override;
+    bool receiveEvent(const al::EventFlowEventData* eventData) override;
     bool tryStartDemo();
     void startDemoFromScene();
     bool isEnableStartMoonRockFindDemo() const;
     bool isEnableStartAfterBreakMoonRockDemo() const;
-    void preEventFromSceneFirstMoonGet(const char*);
+    s64 preEventFromSceneFirstMoonGet(const char* name);
     bool isEnableStageStartDemo() const;
     bool isEndDemo() const;
     bool tryStartDemoAfterMoonRockBreak();
@@ -50,4 +49,5 @@ private:
     void* _168 = nullptr;
 };
 
+static_assert(sizeof(StageTalkDemoNpcCap) == 0x170);
 static_assert(sizeof(StageTalkDemoNpcCap) == 0x170);
